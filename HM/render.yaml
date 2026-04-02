@@ -3,4 +3,20 @@ services:
     name: hms-project
     env: python
     buildCommand: "./build.sh"
-    startCommand: "gunicorn hms_fixed.wsgi"
+    startCommand: "gunicorn hospital_management.wsgi:application"
+    plan: free
+    envVars:
+      - key: SECRET_KEY
+        generateValue: true
+      - key: DEBUG
+        value: false
+      - key: ALLOWED_HOSTS
+        value: "hms-project.onrender.com"
+      - key: HOSPITAL_NAME
+        value: "MediCare Hospital"
+      - key: HOSPITAL_ADDRESS
+        value: "123 Health Street, Medical City"
+      - key: HOSPITAL_PHONE
+        value: "+1-234-567-8900"
+      - key: HOSPITAL_EMAIL
+        value: "info@medicare.com"
