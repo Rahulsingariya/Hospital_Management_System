@@ -1,0 +1,371 @@
+{% extends "base.html" %}
+{% block title %}Dr. {{ doctor.name }}{% endblock %}
+{% block breadcrumb %}
+<a href="{{ url('doctors:list') }}" class="breadcrumb-item">Doctors</a>
+<span class="breadcrumb-sep">/</span>
+<span class="breadcrumb-item active">{{ doctor.name }}</span>
+{% endblock %}
+{% block content %}
+<div class="page-header">
+  <div>
+    <h1 class="page-title">Doctor Profile</h1>
+    <p class="text-muted">View and manage doctor information</p>
+  </div>
+  <div class="page-actions">
+    <a href="{{ url('doctors:edit', doctor.pk) }}" class="btn btn-primary"><i class="bi bi-pencil me-1"></i>Edit Profile</a>
+    <a href="{{ url('doctors:list') }}" class="btn btn-outline-secondary"><i class="bi bi-arrow-left me-1"></i>Back</a>
+  </div>
+</div>
+
+<!-- Doctor Header Card -->
+<div class="card mb-4">
+  <div class="card-body p-4">
+    <div class="row g-4 align-items-center">
+      <div class="col-auto">
+        <div class="profile-avatar-lg">{{ doctor.name[0] }}</div>
+      </div>
+      <div class="col">
+        <div class="mb-2">
+          <h2 class="mb-1">Dr. {{ doctor.name }}</h2>
+          <div class="d-flex gap-2 align-items-center">
+            <span class="badge bg-primary">{{ doctor.doctor_id }}</span>
+            <span class="badge {% if doctor.availability == 'available' %}bg-success{% elif doctor.availability == 'busy' %}bg-warning{% else %}bg-secondary{% endif %}">
+              <i class="bi bi-circle-fill"></i> {{ doctor.get_availability_display() }}
+            </span>
+            {% if doctor.department %}
+            <span class="badge bg-info">{{ doctor.department.name }}</span>
+            {% endif %}
+          </div>
+        </div>
+        <div class="row g-3 mt-2">
+          <div class="col-auto">
+            <small class="text-muted">Specialization:</small><br>
+            <strong>{{ doctor.specialization.name if doctor.specialization else '—' }}</strong>
+          </div>
+          <div class="col-auto">
+            <small class="text-muted">Qualification:</small><br>
+            <strong>{{ doctor.qualification or '—' }}</strong>
+          </div>
+          <div class="col-auto">
+            <small class="text-muted">Experience:</small><br>
+            <strong>{{ doctor.experience_years }} Years</strong>
+          </div>
+          <div class="col-auto">
+            <small class="text-muted">Consultation Fee:</small><br>
+            <strong class="text-success">₹{{ doctor.consultation_fee }}</strong>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+</div>
+
+<div class="row g-4">
+  <!-- Left Column: Doctor Info -->
+  <div class="col-xl-5">
+    <!-- Professional Information -->
+    <div class="card mb-4">
+      <div class="card-header">
+        <h5 class="card-title"><i class="bi bi-briefcase me-2 text-primary"></i>Professional Information</h5>
+      </div>
+      <div class="card-body">
+        <div class="info-grid">
+          <div class="info-item">
+            <div class="info-label">Full Name</div>
+            <div class="info-value fw-semibold">{{ doctor.name }}</div>
+          </div>
+          <div class="info-item">
+            <div class="info-label">Doctor ID</div>
+            <div class="info-value">{{ doctor.doctor_id }}</div>
+          </div>
+          <div class="info-item">
+            <div class="info-label">Specialization</div>
+            <div class="info-value">{{ doctor.specialization.name if doctor.specialization else '—' }}</div>
+          </div>
+          <div class="info-item">
+            <div class="info-label">Department</div>
+            <div class="info-value">{{ doctor.department.name if doctor.department else '—' }}</div>
+          </div>
+          <div class="info-item">
+            <div class="info-label">Qualification</div>
+            <div class="info-value">{{ doctor.qualification }}</div>
+          </div>
+          <div class="info-item">
+            <div class="info-label">Experience</div>
+            <div class="info-value">{{ doctor.experience_years }} years</div>
+          </div>
+          <div class="info-item">
+            <div class="info-label">Consultation Fee</div>
+            <div class="info-value text-success fw-bold">₹{{ doctor.consultation_fee }}</div>
+          </div>
+          <div class="info-item">
+            <div class="info-label">Joining Date</div>
+            <div class="info-value">{{ doctor.joining_date.strftime('%d %B %Y') if doctor.joining_date else '—' }}</div>
+          </div>
+          <div class="info-item">
+            <div class="info-label">Availability</div>
+            <div class="info-value">
+              <span class="badge {% if doctor.availability == 'available' %}bg-success{% elif doctor.availability == 'busy' %}bg-warning{% else %}bg-secondary{% endif %} me-0">
+                {{ doctor.get_availability_display() }}
+              </span>
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+
+    <!-- Contact Information -->
+    <div class="card">
+      <div class="card-header">
+        <h5 class="card-title"><i class="bi bi-phone me-2 text-primary"></i>Contact Information</h5>
+      </div>
+      <div class="card-body">
+        <div class="info-grid">
+          <div class="info-item">
+            <div class="info-label">Email</div>
+            <div class="info-value small">
+              <a href="mailto:{{ doctor.user.email }}">{{ doctor.user.email or '—' }}</a>
+            </div>
+          </div>
+          <div class="info-item">
+            <div class="info-label">Phone</div>
+            <div class="info-value">{{ doctor.user.phone or '—' }}</div>
+          </div>
+          <div class="info-item">
+            <div class="info-label">Account Status</div>
+            <div class="info-value">
+              <span class="badge {% if doctor.user.is_active %}bg-success{% else %}bg-danger{% endif %}">
+                {{ 'Active' if doctor.user.is_active else 'Inactive' }}
+              </span>
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <!-- Right Column: Appointments & Schedule -->
+  <div class="col-xl-7">
+    <!-- Bio Section -->
+    {% if doctor.bio %}
+    <div class="card mb-4">
+      <div class="card-header">
+        <h5 class="card-title"><i class="bi bi-file-text me-2 text-primary"></i>Professional Bio</h5>
+      </div>
+      <div class="card-body">
+        <p class="mb-0">{{ doctor.bio }}</p>
+      </div>
+    </div>
+    {% endif %}
+
+    <!-- Schedule -->
+    {% if schedules %}
+    <div class="card mb-4">
+      <div class="card-header">
+        <h5 class="card-title"><i class="bi bi-calendar-week me-2 text-primary"></i>Weekly Schedule</h5>
+      </div>
+      <div class="card-body p-0">
+        <div class="table-responsive">
+          <table class="table table-sm mb-0">
+            <thead class="table-light">
+              <tr>
+                <th>Day</th>
+                <th>Time</th>
+                <th>Max Appointments</th>
+                <th>Status</th>
+              </tr>
+            </thead>
+            <tbody>
+              {% for s in schedules %}
+              <tr>
+                <td class="fw-semibold">{{ s.get_day_of_week_display() }}</td>
+                <td>{{ s.start_time.strftime('%H:%M') }} – {{ s.end_time.strftime('%H:%M') }}</td>
+                <td>{{ s.max_appointments }}</td>
+                <td>
+                  <span class="badge {% if s.is_active %}bg-success{% else %}bg-secondary{% endif %}">
+                    {{ 'Active' if s.is_active else 'Inactive' }}
+                  </span>
+                </td>
+              </tr>
+              {% endfor %}
+            </tbody>
+          </table>
+        </div>
+      </div>
+    </div>
+    {% endif %}
+
+    <!-- Recent Appointments -->
+    <div class="card">
+      <div class="card-header">
+        <h5 class="card-title"><i class="bi bi-calendar-check me-2 text-primary"></i>Recent Appointments</h5>
+      </div>
+      <div class="card-body p-0">
+        {% if appointments %}
+        <div class="table-responsive">
+          <table class="table table-hover mb-0">
+            <thead class="table-light">
+              <tr>
+                <th>Patient</th>
+                <th>Date & Time</th>
+                <th>Type</th>
+                <th>Status</th>
+                <th>Action</th>
+              </tr>
+            </thead>
+            <tbody>
+              {% for appt in appointments %}
+              <tr>
+                <td>
+                  <div class="d-flex align-items-center gap-2">
+                    <div class="avatar-circle avatar-circle-sm" style="background: linear-gradient(135deg, #0066cc, #0099ff);">
+                      {{ appt.patient.first_name[0] if appt.patient.first_name else 'P' }}
+                    </div>
+                    <div>
+                      <span class="fw-semibold small">{{ appt.patient.full_name }}</span><br>
+                      <small class="text-muted">#{{ appt.patient.patient_id }}</small>
+                    </div>
+                  </div>
+                </td>
+                <td class="small">
+                  <div>{{ appt.appointment_date.strftime('%d %b %Y') }}</div>
+                  <small class="text-muted">{{ appt.appointment_time.strftime('%H:%M') if appt.appointment_time else '—' }}</small>
+                </td>
+                <td>
+                  <span class="badge type-badge-{{ appt.appointment_type }}">
+                    {{ appt.get_appointment_type_display() }}
+                  </span>
+                </td>
+                <td>
+                  <span class="badge {% if appt.status == 'confirmed' %}bg-success{% elif appt.status == 'pending' %}bg-warning{% elif appt.status == 'cancelled' %}bg-danger{% else %}bg-secondary{% endif %}">
+                    {{ appt.get_status_display() }}
+                  </span>
+                </td>
+                <td>
+                  <a href="{{ url('appointments:detail', appt.pk) }}" class="btn btn-sm btn-outline-primary">
+                    <i class="bi bi-eye"></i> View
+                  </a>
+                </td>
+              </tr>
+              {% endfor %}
+            </tbody>
+          </table>
+        </div>
+        {% else %}
+        <div class="empty-state py-4">
+          <i class="bi bi-inbox" style="font-size: 2rem; color: #ccc;"></i>
+          <p class="mt-2 text-muted">No appointments found</p>
+        </div>
+        {% endif %}
+      </div>
+    </div>
+  </div>
+</div>
+
+<style>
+.profile-avatar-lg {
+  width: 90px;
+  height: 90px;
+  border-radius: 12px;
+  background: linear-gradient(135deg, #0066cc, #0099ff);
+  color: white;
+  font-size: 36px;
+  font-weight: 700;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  box-shadow: 0 4px 12px rgba(0, 102, 204, 0.25);
+}
+
+.info-grid {
+  display: grid;
+  grid-template-columns: 1fr 1fr;
+  gap: 18px;
+}
+
+.info-item {
+  padding: 12px 0;
+  border-bottom: 1px solid #f0f0f0;
+}
+
+.info-item:last-child {
+  border-bottom: none;
+}
+
+.info-label {
+  font-size: 12px;
+  font-weight: 700;
+  text-transform: uppercase;
+  letter-spacing: 0.5px;
+  color: #94a3b8;
+  margin-bottom: 4px;
+}
+
+.info-value {
+  font-size: 14px;
+  color: #0f172a;
+  line-height: 1.5;
+}
+
+.avatar-circle {
+  width: 40px;
+  height: 40px;
+  border-radius: 50%;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  font-weight: 600;
+  color: white;
+  font-size: 14px;
+}
+
+.avatar-circle-sm {
+  width: 32px;
+  height: 32px;
+  font-size: 12px;
+}
+
+.empty-state {
+  text-align: center;
+  padding: 40px 20px;
+}
+
+.type-badge-online {
+  background-color: #cffafe;
+  color: #06b6d4;
+}
+
+.type-badge-offline {
+  background-color: #f3f4f6;
+  color: #64748b;
+}
+
+.status-dot {
+  display: inline-flex;
+  align-items: center;
+  gap: 6px;
+  font-size: 12px;
+  font-weight: 500;
+}
+
+.status-dot::before {
+  content: '';
+  width: 8px;
+  height: 8px;
+  border-radius: 50%;
+  display: inline-block;
+}
+
+.status-dot.status-confirmed::before {
+  background-color: #10b981;
+}
+
+.status-dot.status-pending::before {
+  background-color: #f59e0b;
+}
+
+.status-dot.status-cancelled::before {
+  background-color: #ef4444;
+}
+</style>
+{% endblock %}

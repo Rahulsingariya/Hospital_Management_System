@@ -1,0 +1,39 @@
+{% extends "base.html" %}
+{% block title %}Add Medical Record{% endblock %}
+{% block breadcrumb %}
+<a href="{{ url('patients:list') }}" class="breadcrumb-item">Patients</a>
+<span class="breadcrumb-sep">/</span>
+<a href="{{ url('patients:detail', pk=patient.pk) }}" class="breadcrumb-item">{{ patient.full_name }}</a>
+<span class="breadcrumb-sep">/</span>
+<span class="breadcrumb-item active">Add Record</span>
+{% endblock %}
+{% block content %}
+<div class="page-header">
+  <div><h1 class="page-title">Add Medical Record</h1><p class="page-subtitle">Patient: {{ patient.full_name }} ({{ patient.patient_id }})</p></div>
+</div>
+<div class="row g-4">
+  <div class="col-xl-8">
+    <div class="card">
+      <div class="card-header"><h5 class="card-title"><i class="bi bi-file-medical me-2 text-primary"></i>Medical Record</h5></div>
+      <div class="card-body">
+        <form method="POST">
+          {{ csrf_field(request) }}
+          <div class="row g-3">
+            <div class="col-12"><label class="form-label">Doctor</label>{{ form.doctor }}</div>
+            <div class="col-12"><label class="form-label">Chief Complaint <span class="text-danger">*</span></label>{{ form.chief_complaint }}</div>
+            <div class="col-12"><label class="form-label">Diagnosis <span class="text-danger">*</span></label>{{ form.diagnosis }}</div>
+            <div class="col-12"><label class="form-label">Treatment <span class="text-danger">*</span></label>{{ form.treatment }}</div>
+            <div class="col-12"><label class="form-label">Prescription</label>{{ form.prescription }}</div>
+            <div class="col-md-6"><label class="form-label">Follow-up Date</label>{{ form.follow_up_date }}</div>
+            <div class="col-12"><label class="form-label">Notes</label>{{ form.notes }}</div>
+            <div class="col-12 d-flex gap-2">
+              <button type="submit" class="btn btn-primary"><i class="bi bi-check-lg me-2"></i>Save Record</button>
+              <a href="{{ url('patients:detail', pk=patient.pk) }}" class="btn btn-outline-secondary">Cancel</a>
+            </div>
+          </div>
+        </form>
+      </div>
+    </div>
+  </div>
+</div>
+{% endblock %}

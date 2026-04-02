@@ -1,0 +1,171 @@
+{% extends "base.html" %}
+{% block title %}Billing{% endblock %}
+{% block breadcrumb %}
+<span class="breadcrumb-item">Operations</span><span class="breadcrumb-sep">/</span>
+<span class="breadcrumb-item active">Billing</span>
+{% endblock %}
+{% block content %}
+<div class="page-header">
+  <div><h1 class="page-title">Billing & Invoices</h1><p class="page-subtitle">Manage patient invoices and payments</p></div>
+  <div class="page-actions">
+    <a href="{{ url('billing:create') }}" class="btn btn-primary"><i class="bi bi-plus-lg"></i> New Invoice</a>
+  </div>
+</div>
+
+<div class="row g-4 mb-4">
+  <div class="col-md-6">
+    <div class="stat-card stat-card-green">
+      <div class="stat-icon"><i class="bi bi-check-circle-fill"></i></div>
+      <div class="stat-body">
+        <div class="stat-number">₹{{ "{:,.0f}".format(total_revenue) }}</div>
+        <div class="stat-label">Total Revenue (Paid)</div>
+      </div>
+    </div>
+  </div>
+  <div class="col-md-6">
+    <div class="stat-card stat-card-orange">
+      <div class="stat-icon"><i class="bi bi-hourglass-split"></i></div>
+      <div class="stat-body">
+        <div class="stat-number">₹{{ "{:,.0f}".format(pending_amount) }}</div>
+        <div class="stat-label">Pending Amount</div>
+      </div>
+    </div>
+  </div>
+</div>
+
+<div class="card mb-4">
+  <div class="card-body">
+    <form method="GET" class="row g-3 align-items-end">
+      <div class="col-md-6">
+        <div class="input-group">
+          <span class="input-group-text"><i class="bi bi-search"></i></span>
+          <input type="text" name="q" value="{{ query }}" class="form-control" placeholder="Invoice number or patient name..."/>
+        </div>
+      </div>
+      <div class="col-md-4">
+        <select name="status" class="form-select">
+          <option value="">All Statuses</option>
+          <option value="draft" {{ 'selected' if status == 'draft' }}>Draft</option>
+          <option value="sent" {{ 'selected' if status == 'sent' }}>Sent</option>
+          <option value="paid" {{ 'selected' if status == 'paid' }}>Paid</option>
+          <option value="partial" {{ 'selected' if status == 'partial' }}>Partial</option>
+          <option value="overdue" {{ 'selected' if status == 'overdue' }}>Overdue</option>
+        </select>
+      </div>
+      <div class="col-md-2">
+        <button type="submit" class="btn btn-primary w-100"><i class="bi bi-funnel"></i></button>
+      </div>
+    </form>
+  </div>
+</div>
+
+{% if invoices %}
+<div class="row g-4">
+  {% for inv in invoices %}
+  <div class="col-md-6 col-xl-4">
+    <div class="invoice-card" style="border: 1px solid #e5e7eb; border-radius: 12px; padding: 20px; background: white; transition: all 0.3s cubic-bezier(0.4, 0, 0.2, 1);">
+      <style>
+        .invoice-card {
+          position: relative;
+        }
+        .invoice-card:hover {
+          transform: translateY(-4px);
+          border-color: #2563eb;
+          box-shadow: 0 12px 24px rgba(37, 99, 235, 0.12);
+        }
+        .invoice-avatar {
+          width: 48px;
+          height: 48px;
+          border-radius: 8px;
+          display: flex;
+          align-items: center;
+          justify-content: center;
+          font-size: 18px;
+          font-weight: 700;
+          color: white;
+          background: linear-gradient(135deg, #3b82f6, #60a5fa);
+        }
+        .invoice-stat {
+          padding: 8px;
+          border-radius: 6px;
+          background-color: #f9fafb;
+          border: 1px solid #e5e7eb;
+          text-align: center;
+        }
+        .invoice-stat-label {
+          font-size: 10px;
+          font-weight: 600;
+          color: #6b7280;
+          text-transform: uppercase;
+          letter-spacing: 0.5px;
+        }
+        .invoice-stat-value {
+          font-size: 13px;
+          font-weight: 700;
+          color: #1f2937;
+          margin-top: 2px;
+        }
+      </style>
+
+      <div class="d-flex align-items-start justify-content-between mb-3" style="border-bottom: 1px solid #f3f4f6; padding-bottom: 12px;">
+        <div>
+          <p style="margin: 0; font-size: 11px; font-weight: 600; color: #6b7280; text-transform: uppercase; letter-spacing: 0.5px;">Invoice</p>
+          <p style="margin: 4px 0 0; font-size: 13px; color: #1f2937; font-weight: 700;">{{ inv.invoice_number }}</p>
+        </div>
+        <span class="badge {% if inv.status == 'paid' %}bg-success-subtle text-success{% elif inv.status in ['sent','partial'] %}bg-warning-subtle text-warning{% elif inv.status == 'overdue' %}bg-danger-subtle text-danger{% else %}bg-secondary-subtle text-secondary{% endif %}" style="font-size: 11px; padding: 6px 10px; white-space: nowrap;">
+          <span style="display: inline-block; width: 6px; height: 6px; border-radius: 50%; background-color: currentColor; margin-right: 4px; vertical-align: middle;"></span>
+          {{ inv.get_status_display() }}
+        </span>
+      </div>
+
+      <div class="d-flex align-items-center gap-2 mb-4">
+        <div class="invoice-avatar">{{ inv.patient.first_name[0] }}</div>
+        <div style="flex: 1;">
+          <p style="margin: 0; font-weight: 700; font-size: 14px; color: #1f2937;">{{ inv.patient.full_name }}</p>
+          <p style="margin: 2px 0 0; font-size: 11px; color: #6b7280;">{{ inv.patient.patient_id }}</p>
+        </div>
+      </div>
+
+      <div class="row g-2 mb-4">
+        <div class="col-6">
+          <div class="invoice-stat">
+            <div class="invoice-stat-label">Issue Date</div>
+            <div class="invoice-stat-value">{{ inv.issue_date.strftime('%d %b') }}</div>
+          </div>
+        </div>
+        <div class="col-6">
+          <div class="invoice-stat">
+            <div class="invoice-stat-label">Due Date</div>
+            <div class="invoice-stat-value">{{ inv.due_date.strftime('%d %b') }}</div>
+          </div>
+        </div>
+        <div class="col-6">
+          <div class="invoice-stat">
+            <div class="invoice-stat-label">Total</div>
+            <div class="invoice-stat-value" style="color: #0f766e;">₹{{ "{:.0f}".format(inv.total) }}</div>
+          </div>
+        </div>
+        <div class="col-6">
+          <div class="invoice-stat">
+            <div class="invoice-stat-label">Paid</div>
+            <div class="invoice-stat-value" style="color: #16a34a;">₹{{ "{:.0f}".format(inv.amount_paid) }}</div>
+          </div>
+        </div>
+      </div>
+
+      <div class="d-flex gap-2">
+        <a href="{{ url('billing:detail', inv.pk) }}" class="btn btn-outline-primary btn-sm w-100" style="font-size: 12px;"><i class="bi bi-file-text"></i> View Invoice</a>
+      </div>
+    </div>
+  </div>
+  {% endfor %}
+</div>
+{% else %}
+<div style="border: 1px solid #e5e7eb; border-radius: 12px; padding: 60px 24px; background: white; text-align: center;">
+  <i class="bi bi-receipt" style="font-size: 48px; color: #d1d5db; margin-bottom: 16px; display: block;"></i>
+  <h5 style="font-family: 'Poppins', sans-serif; font-weight: 700; color: #1f2937; margin: 0 0 8px;">No invoices found</h5>
+  <p style="color: #6b7280; margin: 0 0 20px; font-size: 14px;">Try adjusting your search or create a new invoice.</p>
+  <a href="{{ url('billing:create') }}" class="btn btn-primary"><i class="bi bi-plus-lg"></i> New Invoice</a>
+</div>
+{% endif %}
+{% endblock %}

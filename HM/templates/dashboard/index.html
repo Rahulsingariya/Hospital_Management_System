@@ -1,0 +1,521 @@
+{% extends "base.html" %}
+{% block title %}Dashboard{% endblock %}
+{% block breadcrumb %}<span class="breadcrumb-item active">Dashboard</span>{% endblock %}
+
+{% block content %}
+<div class="page-header" style="background: linear-gradient(135deg, #667eea 0%, #764ba2 100%); color: white; padding: 30px 0; border-radius: 12px; margin-bottom: 30px;">
+  <div style="padding: 0 24px;">
+    <div class="d-flex justify-content-between align-items-center mb-3">
+      <div>
+        <h1 class="page-title" style="color: white; margin-bottom: 8px;">
+          <i class="bi bi-speedometer2 me-2"></i>Dashboard
+        </h1>
+        <p class="page-subtitle" style="color: rgba(255,255,255,0.9); margin: 0;">
+          Welcome back, <strong>{{ request.user.get_full_name() or request.user.username }}</strong>! 
+          Here's your hospital's real-time overview.
+        </p>
+      </div>
+      <div>
+        <span class="badge bg-white text-primary" style="font-size:13px; padding:10px 16px; font-weight:600">
+          <i class="bi bi-calendar3 me-2"></i><span id="currentDate"></span>
+        </span>
+      </div>
+    </div>
+    <div class="d-flex gap-2" style="margin-top: 16px;">
+      <a href="{{ url('appointments:create') }}" class="btn btn-light btn-sm" style="color: #667eea;">
+        <i class="bi bi-calendar-plus me-1"></i>Book Appointment
+      </a>
+      <a href="{{ url('patients:create') }}" class="btn btn-light btn-sm" style="color: #667eea;">
+        <i class="bi bi-person-plus me-1"></i>Register Patient
+      </a>
+      <a href="{{ url('billing:list') }}" class="btn btn-light btn-sm" style="color: #667eea;">
+        <i class="bi bi-download me-1"></i>Reports
+      </a>
+    </div>
+  </div>
+</div>
+
+<div class="row g-4 mb-4">
+  <div class="col-xl-3 col-md-6">
+    <div class="stat-card stat-card-blue">
+      <div class="stat-icon"><i class="bi bi-people-fill"></i></div>
+      <div class="stat-body">
+        <div class="stat-number">{{ total_patients }}</div>
+        <div class="stat-label">Active Patients</div>
+        <div class="stat-trend trend-up"><i class="bi bi-arrow-up-short"></i>12% from last month</div>
+      </div>
+    </div>
+  </div>
+  <div class="col-xl-3 col-md-6">
+    <div class="stat-card stat-card-green">
+      <div class="stat-icon"><i class="bi bi-person-badge-fill"></i></div>
+      <div class="stat-body">
+        <div class="stat-number">{{ total_doctors }}</div>
+        <div class="stat-label">Medical Staff</div>
+        <div class="stat-trend trend-neutral"><i class="bi bi-dash"></i>Across all departments</div>
+      </div>
+    </div>
+  </div>
+  <div class="col-xl-3 col-md-6">
+    <div class="stat-card stat-card-orange">
+      <div class="stat-icon"><i class="bi bi-calendar-check-fill"></i></div>
+      <div class="stat-body">
+        <div class="stat-number">{{ today_appointments }}</div>
+        <div class="stat-label">Today's Appointments</div>
+        <div class="stat-trend trend-up"><i class="bi bi-clock"></i>On schedule</div>
+      </div>
+    </div>
+  </div>
+  <div class="col-xl-3 col-md-6">
+    <div class="stat-card stat-card-purple">
+      <div class="stat-icon"><i class="bi bi-currency-rupee"></i></div>
+      <div class="stat-body">
+        <div class="stat-number">₹{{ monthly_revenue }}</div>
+        <div class="stat-label">Monthly Revenue</div>
+        <div class="stat-trend trend-up"><i class="bi bi-arrow-up-short"></i>8% increase</div>
+      </div>
+    </div>
+  </div>
+</div>
+
+<div class="row g-4 mb-4">
+  <div class="col-xl-8">
+    <div class="card h-100">
+      <div class="card-header" style="background: linear-gradient(135deg, #f5f7fa 0%, #c3cfe2 100%); border-bottom: 2px solid #e5e7eb;">
+        <div class="d-flex justify-content-between align-items-center">
+          <h5 class="card-title" style="margin: 0;">
+            <i class="bi bi-graph-up text-primary me-2"></i>Revenue Overview
+          </h5>
+          <span class="badge bg-primary-subtle text-primary" style="font-size:11px">Last 6 Months</span>
+        </div>
+        <p style="margin: 8px 0 0; font-size: 12px; color: #6b7280;">
+          Monthly revenue trends and growth metrics
+        </p>
+      </div>
+      <div class="card-body">
+        <canvas id="revenueChart" height="80"></canvas>
+      </div>
+    </div>
+  </div>
+
+  <div class="col-xl-4">
+    <div class="card h-100">
+      <div class="card-header" style="border-bottom: 2px solid #e5e7eb;">
+        <h5 class="card-title" style="margin: 0;">
+          <i class="bi bi-pie-chart text-success me-2"></i>Today's Appointments
+        </h5>
+        <p style="margin: 8px 0 0; font-size: 12px; color: #6b7280;">Distribution by status</p>
+      </div>
+      <div class="card-body d-flex flex-column align-items-center justify-content-center">
+        {% if status_summary %}
+          <canvas id="statusChart" height="180"></canvas>
+          <div class="legend-wrap mt-3" id="statusLegend"></div>
+        {% else %}
+          <div class="empty-state">
+            <i class="bi bi-calendar-x"></i>
+            <p>No appointments today</p>
+          </div>
+        {% endif %}
+      </div>
+    </div>
+  </div>
+</div>
+
+<div class="row g-4 mb-4">
+  <div class="col-xl-4">
+    <div class="card">
+      <div class="card-header" style="border-bottom: 2px solid #e5e7eb;">
+        <h5 class="card-title"><i class="bi bi-hourglass-split text-warning me-2"></i>Pending Approvals</h5>
+        <p style="margin: 8px 0 0; font-size: 12px; color: #6b7280;">Tasks awaiting action</p>
+      </div>
+      <div class="card-body p-0">
+        <div style="padding: 16px; border-bottom: 1px solid #f3f4f6; display: flex; justify-content: space-between; align-items: center;">
+          <div>
+            <div style="font-weight: 700; font-size: 14px; color: #1f2937;">Lab Reports</div>
+            <div style="font-size: 12px; color: #6b7280; margin-top: 4px;">Awaiting review</div>
+          </div>
+          <span class="badge bg-warning-subtle text-warning" style="font-weight: 700;">8</span>
+        </div>
+        <div style="padding: 16px; border-bottom: 1px solid #f3f4f6; display: flex; justify-content: space-between; align-items: center;">
+          <div>
+            <div style="font-weight: 700; font-size: 14px; color: #1f2937;">Prescriptions</div>
+            <div style="font-size: 12px; color: #6b7280; margin-top: 4px;">To be dispensed</div>
+          </div>
+          <span class="badge bg-info-subtle text-info" style="font-weight: 700;">5</span>
+        </div>
+        <div style="padding: 16px; display: flex; justify-content: space-between; align-items: center;">
+          <div>
+            <div style="font-weight: 700; font-size: 14px; color: #1f2937;">Invoices</div>
+            <div style="font-size: 12px; color: #6b7280; margin-top: 4px;">Pending payment</div>
+          </div>
+          <span class="badge bg-danger-subtle text-danger" style="font-weight: 700;">3</span>
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <div class="col-xl-4">
+    <div class="card">
+      <div class="card-header" style="border-bottom: 2px solid #e5e7eb;">
+        <h5 class="card-title"><i class="bi bi-exclamation-triangle text-danger me-2"></i>Critical Alerts</h5>
+        <p style="margin: 8px 0 0; font-size: 12px; color: #6b7280;">Important notifications</p>
+      </div>
+      <div class="card-body p-0">
+        <div style="padding: 16px; border-bottom: 1px solid #f3f4f6; border-left: 3px solid #dc2626;">
+          <div style="display: flex; align-items: flex-start; gap: 12px;">
+            <i class="bi bi-exclamation-circle-fill text-danger" style="font-size: 18px; margin-top: 2px;"></i>
+            <div style="flex: 1;">
+              <div style="font-weight: 700; font-size: 13px; color: #1f2937;">Low Medicine Stock</div>
+              <div style="font-size: 12px; color: #6b7280; margin-top: 4px;">3 items below minimum</div>
+            </div>
+          </div>
+        </div>
+        <div style="padding: 16px; border-bottom: 1px solid #f3f4f6; border-left: 3px solid #ea580c;">
+          <div style="display: flex; align-items: flex-start; gap: 12px;">
+            <i class="bi bi-exclamation-triangle-fill text-warning" style="font-size: 18px; margin-top: 2px;"></i>
+            <div style="flex: 1;">
+              <div style="font-weight: 700; font-size: 13px; color: #1f2937;">Equipment Maintenance</div>
+              <div style="font-size: 12px; color: #6b7280; margin-top: 4px;">Due in 2 days</div>
+            </div>
+          </div>
+        </div>
+        <div style="padding: 16px; border-left: 3px solid #0891b2;">
+          <div style="display: flex; align-items: flex-start; gap: 12px;">
+            <i class="bi bi-info-circle-fill text-info" style="font-size: 18px; margin-top: 2px;"></i>
+            <div style="flex: 1;">
+              <div style="font-weight: 700; font-size: 13px; color: #1f2937;">System Update</div>
+              <div style="font-size: 12px; color: #6b7280; margin-top: 4px;">Available tomorrow</div>
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <div class="col-xl-4">
+    <div class="card">
+      <div class="card-header" style="border-bottom: 2px solid #e5e7eb;">
+        <h5 class="card-title"><i class="bi bi-star-fill text-success me-2"></i>Performance Metrics</h5>
+        <p style="margin: 8px 0 0; font-size: 12px; color: #6b7280;">Key performance indicators</p>
+      </div>
+      <div class="card-body p-0">
+        <div style="padding: 16px; border-bottom: 1px solid #f3f4f6;">
+          <div style="display: flex; justify-content: space-between; align-items: center; margin-bottom: 8px;">
+            <span style="font-size: 13px; color: #6b7280; font-weight: 600;">Bed Occupancy</span>
+            <span style="font-weight: 700; color: #059669;">78%</span>
+          </div>
+          <div style="width: 100%; height: 6px; background: #e5e7eb; border-radius: 3px; overflow: hidden;">
+            <div style="width: 78%; height: 100%; background: linear-gradient(90deg, #10b981, #059669);"></div>
+          </div>
+        </div>
+        <div style="padding: 16px; border-bottom: 1px solid #f3f4f6;">
+          <div style="display: flex; justify-content: space-between; align-items: center; margin-bottom: 8px;">
+            <span style="font-size: 13px; color: #6b7280; font-weight: 600;">Doctor Availability</span>
+            <span style="font-weight: 700; color: #3b82f6;">92%</span>
+          </div>
+          <div style="width: 100%; height: 6px; background: #e5e7eb; border-radius: 3px; overflow: hidden;">
+            <div style="width: 92%; height: 100%; background: linear-gradient(90deg, #3b82f6, #1d4ed8);"></div>
+          </div>
+        </div>
+        <div style="padding: 16px;">
+          <div style="display: flex; justify-content: space-between; align-items: center; margin-bottom: 8px;">
+            <span style="font-size: 13px; color: #6b7280; font-weight: 600;">Patient Satisfaction</span>
+            <span style="font-weight: 700; color: #f59e0b;">86%</span>
+          </div>
+          <div style="width: 100%; height: 6px; background: #e5e7eb; border-radius: 3px; overflow: hidden;">
+            <div style="width: 86%; height: 100%; background: linear-gradient(90deg, #fbbf24, #f59e0b);"></div>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+</div>
+
+<div class="row g-4">
+  <div class="col-xl-7">
+    <div class="card">
+      <div class="card-header" style="border-bottom: 2px solid #e5e7eb;">
+        <div class="d-flex justify-content-between align-items-center">
+          <h5 class="card-title" style="margin: 0;">
+            <i class="bi bi-calendar-day text-warning me-2"></i>Today's Appointments
+          </h5>
+          <a href="{{ url('appointments:list') }}" class="btn btn-sm btn-outline-primary">View All</a>
+        </div>
+        <p style="margin: 8px 0 0; font-size: 12px; color: #6b7280;">Scheduled appointments for today</p>
+      </div>
+      <div class="card-body p-0">
+        <div class="table-responsive">
+          <table class="table table-hover mb-0">
+            <thead style="background: #f9fafb; border-bottom: 2px solid #e5e7eb;">
+              <tr>
+                <th style="padding: 12px 16px; font-weight: 700; color: #6b7280; font-size: 12px;">Patient</th>
+                <th style="padding: 12px 16px; font-weight: 700; color: #6b7280; font-size: 12px;">Doctor</th>
+                <th style="padding: 12px 16px; font-weight: 700; color: #6b7280; font-size: 12px;">Time</th>
+                <th style="padding: 12px 16px; font-weight: 700; color: #6b7280; font-size: 12px;">Type</th>
+                <th style="padding: 12px 16px; font-weight: 700; color: #6b7280; font-size: 12px;">Status</th>
+              </tr>
+            </thead>
+            <tbody>
+              {% for appt in appointments_today %}
+              <tr style="border-bottom: 1px solid #f3f4f6;">
+                <td style="padding: 12px 16px;">
+                  <div class="d-flex align-items-center gap-2">
+                    <div class="avatar-circle avatar-circle-sm" style="background: linear-gradient(135deg, #3b82f6, #60a5fa); width: 32px; height: 32px; font-size: 12px;">
+                      {{ appt.patient.first_name[0]|upper }}
+                    </div>
+                    <div>
+                      <div style="font-weight: 700; font-size: 13px; color: #1f2937;">
+                        {{ appt.patient.full_name }}
+                      </div>
+                      <div style="font-size: 11px; color: #6b7280;">
+                        {{ appt.patient.patient_id }}
+                      </div>
+                    </div>
+                  </div>
+                </td>
+                <td style="padding: 12px 16px; font-size: 13px; color: #1f2937;">
+                  {{ appt.doctor.full_name }}
+                </td>
+                <td style="padding: 12px 16px;">
+                  <span class="badge bg-light text-dark" style="font-size: 12px;">
+                    {{ appt.appointment_time.strftime('%I:%M %p') }}
+                  </span>
+                </td>
+                <td style="padding: 12px 16px;">
+                  <span class="badge type-badge-{{ appt.appointment_type|lower|default('general') }}" style="font-size: 11px;">
+                    {{ appt.get_appointment_type_display() }}
+                  </span>
+                </td>
+                <td style="padding: 12px 16px;">
+                  <span class="status-dot status-{{ appt.status|lower|default('unknown') }}" style="font-size: 11px;">
+                    {{ appt.get_status_display() }}
+                  </span>
+                </td>
+              </tr>
+              {% else %}
+              <tr>
+                <td colspan="5" style="padding: 24px; text-align: center;">
+                  <div style="color: #6b7280;">
+                    <i class="bi bi-calendar-x" style="font-size: 32px; display: block; margin-bottom: 8px;"></i>
+                    <div style="font-weight: 600;">No appointments today</div>
+                  </div>
+                </td>
+              </tr>
+              {% endfor %}
+            </tbody>
+          </table>
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <div class="col-xl-5">
+    <div class="card mb-4">
+      <div class="card-header" style="border-bottom: 2px solid #e5e7eb;">
+        <div class="d-flex justify-content-between align-items-center">
+          <h5 class="card-title" style="margin: 0;">
+            <i class="bi bi-person-plus text-info me-2"></i>Recent Patients
+          </h5>
+          <a href="{{ url('patients:list') }}" class="btn btn-sm btn-outline-primary">View All</a>
+        </div>
+        <p style="margin: 8px 0 0; font-size: 12px; color: #6b7280;">Recently registered patients</p>
+      </div>
+      <div class="card-body p-0">
+        {% for patient in recent_patients %}
+        <a href="{{ url('patients:detail', patient.pk) }}" class="patient-item" 
+           style="padding: 12px 16px; display: flex; align-items: center; gap: 12px; border-bottom: 1px solid #f3f4f6; text-decoration: none; color: inherit; transition: all 0.3s ease;">
+          <div class="avatar-circle avatar-circle-sm 
+                       {% if patient.gender == 'M' %}avatar-male{% else %}avatar-female{% endif %}" 
+               style="width: 36px; height: 36px; font-size: 14px; flex-shrink: 0;">
+            {{ patient.first_name[0]|upper }}
+          </div>
+          <div style="flex: 1; min-width: 0;">
+            <div style="font-weight: 700; font-size: 13px; color: #1f2937;">
+              {{ patient.full_name }}
+            </div>
+            <div style="font-size: 11px; color: #6b7280;">
+              {{ patient.patient_id }} · {{ patient.age }} yrs
+            </div>
+          </div>
+          <span class="badge {% if patient.status == 'active' %}bg-success-subtle text-success{% else %}bg-secondary-subtle text-secondary{% endif %}" 
+                 style="font-size: 11px; flex-shrink: 0;">
+            {{ patient.status|title }}
+          </span>
+        </a>
+        {% else %}
+        <div style="padding: 24px; text-align: center; color: #6b7280;">
+          <i class="bi bi-inbox"></i> No patients yet
+        </div>
+        {% endfor %}
+      </div>
+    </div>
+
+    {% if low_stock %}
+    <div class="card" style="border-left: 4px solid var(--bs-warning); background: #fffbeb;">
+      <div class="card-header bg-warning-subtle" style="border-bottom: 2px solid #fcd34d;">
+        <h5 class="card-title text-warning" style="margin: 0;">
+          <i class="bi bi-exclamation-triangle-fill me-2"></i>Low Stock Alert
+        </h5>
+        <p style="margin: 8px 0 0; font-size: 12px; color: #92400e;">Items below minimum threshold</p>
+      </div>
+      <div class="card-body p-0">
+        {% for med in low_stock %}
+        <div style="padding: 12px 16px; border-bottom: 1px solid #fde68a; display: flex; justify-content: space-between; align-items: center;">
+          <div>
+            <div style="font-weight: 700; font-size: 13px; color: #1f2937;">{{ med.name }}</div>
+            <div style="font-size: 11px; color: #6b7280; margin-top: 2px;">{{ med.unit }}</div>
+          </div>
+          <span class="badge bg-warning text-dark" style="font-weight: 700;">
+            {{ med.quantity_in_stock }} left
+          </span>
+        </div>
+        {% endfor %}
+      </div>
+    </div>
+    {% endif %}
+  </div>
+</div>
+{% endblock %}
+
+{% block extra_js %}
+<script>
+// Data safety: We parse the Jinja variables into local JS constants first.
+// This prevents the IDE from getting confused by Jinja syntax within complex objects.
+
+const REVENUE_RAW = {{ revenue_data | tojson | safe }};
+const STATUS_RAW = {{ status_summary | tojson | safe }};
+
+// Revenue Chart
+const revenueCtx = document.getElementById('revenueChart')?.getContext('2d');
+if (revenueCtx && REVENUE_RAW) {
+  new Chart(revenueCtx, {
+    type: 'line',
+    data: {
+      labels: REVENUE_RAW.map(d => d.month),
+      datasets: [{
+        label: 'Revenue (₹)',
+        data: REVENUE_RAW.map(d => d.revenue),
+        borderColor: '#2563eb',
+        backgroundColor: 'rgba(37, 99, 235, 0.08)',
+        borderWidth: 3,
+        fill: true,
+        tension: 0.4,
+        pointBackgroundColor: '#2563eb',
+        pointBorderColor: '#fff',
+        pointBorderWidth: 2,
+        pointRadius: 5,
+        pointHoverRadius: 7
+      }]
+    },
+    options: {
+      responsive: true,
+      maintainAspectRatio: true,
+      interaction: { mode: 'index', intersect: false },
+      plugins: {
+        legend: { display: false },
+        tooltip: {
+          backgroundColor: 'rgba(0, 0, 0, 0.8)',
+          padding: 12,
+          callbacks: {
+            label: (context) => '₹ ' + context.formattedValue.replace(/\B(?=(\d{3})+(?!\d))/g, ",")
+          }
+        }
+      },
+      scales: {
+        y: {
+          beginAtZero: true,
+          ticks: {
+            callback: v => '₹' + (v / 1000).toFixed(0) + 'K',
+            font: { size: 11 },
+            color: '#6b7280'
+          },
+          grid: { color: 'rgba(0, 0, 0, 0.05)', drawBorder: false }
+        },
+        x: {
+          ticks: { font: { size: 11 }, color: '#6b7280' },
+          grid: { display: false }
+        }
+      }
+    }
+  });
+}
+
+// Status Doughnut Chart
+const statusColors = {
+  scheduled:   '#3b82f6',
+  confirmed:   '#10b981',
+  in_progress: '#f59e0b',
+  completed:   '#7c3aed',
+  cancelled:   '#ef4444',
+  no_show:     '#6b7280'
+};
+
+if (STATUS_RAW && STATUS_RAW.length > 0) {
+  const statusCtx = document.getElementById('statusChart')?.getContext('2d');
+  if (statusCtx) {
+    new Chart(statusCtx, {
+      type: 'doughnut',
+      data: {
+        labels: STATUS_RAW.map(d => {
+          return d.status.replace(/_/g, ' ')
+                         .split(' ')
+                         .map(word => word.charAt(0).toUpperCase() + word.slice(1))
+                         .join(' ');
+        }),
+        datasets: [{
+          data: STATUS_RAW.map(d => d.count),
+          backgroundColor: STATUS_RAW.map(d => statusColors[d.status] || '#94a3b8'),
+          borderColor: '#fff',
+          borderWidth: 3,
+          hoverOffset: 8
+        }]
+      },
+      options: {
+        cutout: '72%',
+        responsive: true,
+        plugins: {
+          legend: { display: false }
+        }
+      }
+    });
+
+    // Build dynamic legend
+    const legendEl = document.getElementById('statusLegend');
+    if (legendEl) {
+      legendEl.innerHTML = STATUS_RAW.map(d => {
+        const label = d.status.replace(/_/g, ' ')
+                               .split(' ')
+                               .map(w => w.charAt(0).toUpperCase() + w.slice(1))
+                               .join(' ');
+        const color = statusColors[d.status] || '#94a3b8';
+        return `
+          <span class="legend-item" style="display: inline-flex; align-items: center; gap: 8px; margin-right: 16px; margin-bottom: 8px;">
+            <span class="legend-dot" style="width: 12px; height: 12px; border-radius: 50%; background: ${color}; display: inline-block;"></span>
+            <span style="font-size: 12px; color: #1f2937;">${label} (${d.count})</span>
+          </span>
+        `;
+      }).join('');
+    }
+  }
+}
+
+// Current date
+const currentDateEl = document.getElementById('currentDate');
+if (currentDateEl) {
+  const options = { weekday: 'long', year: 'numeric', month: 'long', day: 'numeric' };
+  currentDateEl.textContent = new Date().toLocaleDateString('en-IN', options);
+}
+
+// Stat card hover effect
+document.querySelectorAll('.stat-card').forEach(card => {
+  card.addEventListener('mouseenter', function() {
+    this.style.transform = 'translateY(-8px)';
+    this.style.boxShadow = '0 20px 40px rgba(0,0,0,0.1)';
+  });
+  card.addEventListener('mouseleave', function() {
+    this.style.transform = 'translateY(0)';
+    this.style.boxShadow = '0 4px 12px rgba(0,0,0,0.05)';
+  });
+});
+</script>
+{% endblock %}

@@ -1,0 +1,59 @@
+{% extends "base.html" %}
+{% block title %}Appointment {{ appointment.appointment_id }}{% endblock %}
+{% block breadcrumb %}
+<a href="{{ url('appointments:list') }}" class="breadcrumb-item">Appointments</a>
+<span class="breadcrumb-sep">/</span>
+<span class="breadcrumb-item active">{{ appointment.appointment_id }}</span>
+{% endblock %}
+{% block content %}
+<div class="page-header">
+  <div>
+    <h1 class="page-title">Appointment Details</h1>
+    <p class="page-subtitle"><code>{{ appointment.appointment_id }}</code></p>
+  </div>
+</div>
+<div class="row g-4">
+  <div class="col-xl-7">
+    <div class="card">
+      <div class="card-header"><h5 class="card-title"><i class="bi bi-calendar-check me-2 text-primary"></i>Appointment Info</h5></div>
+      <div class="card-body">
+        <div class="info-grid">
+          <div class="info-item"><div class="info-label">Patient</div><div class="info-value">{{ appointment.patient.full_name }}</div></div>
+          <div class="info-item"><div class="info-label">Doctor</div><div class="info-value">{{ appointment.doctor.full_name }}</div></div>
+          <div class="info-item"><div class="info-label">Date</div><div class="info-value">{{ appointment.appointment_date.strftime('%d %b %Y') }}</div></div>
+          <div class="info-item"><div class="info-label">Time</div><div class="info-value">{{ appointment.appointment_time.strftime('%I:%M %p') }}</div></div>
+          <div class="info-item"><div class="info-label">Type</div><div class="info-value"><span class="badge type-badge-{{ appointment.appointment_type }}">{{ appointment.get_appointment_type_display() }}</span></div></div>
+          <div class="info-item"><div class="info-label">Status</div><div class="info-value"><span class="status-dot status-{{ appointment.status }}">{{ appointment.get_status_display() }}</span></div></div>
+        </div>
+        {% if appointment.reason %}<div class="mt-3"><div class="info-label">Reason</div><div class="info-value">{{ appointment.reason }}</div></div>{% endif %}
+        {% if appointment.notes %}<div class="mt-3"><div class="info-label">Notes</div><div class="info-value">{{ appointment.notes }}</div></div>{% endif %}
+      </div>
+    </div>
+  </div>
+  <div class="col-xl-5">
+    <div class="card">
+      <div class="card-header"><h5 class="card-title"><i class="bi bi-arrow-repeat me-2 text-warning"></i>Update Status</h5></div>
+      <div class="card-body">
+        <form method="POST" action="{{ url('appointments:update_status', pk=appointment.pk) }}">
+          {{ csrf_field(request) }}
+          <div class="mb-3">
+            <label class="form-label">Change Status</label>
+            <select name="status" class="form-select mb-3">
+              <option value="scheduled" {{ 'selected' if appointment.status == 'scheduled' }}>Scheduled</option>
+              <option value="confirmed" {{ 'selected' if appointment.status == 'confirmed' }}>Confirmed</option>
+              <option value="in_progress" {{ 'selected' if appointment.status == 'in_progress' }}>In Progress</option>
+              <option value="completed" {{ 'selected' if appointment.status == 'completed' }}>Completed</option>
+              <option value="cancelled" {{ 'selected' if appointment.status == 'cancelled' }}>Cancelled</option>
+              <option value="no_show" {{ 'selected' if appointment.status == 'no_show' }}>No Show</option>
+            </select>
+            <button type="submit" class="btn btn-primary w-100"><i class="bi bi-check-lg me-2"></i>Update Status</button>
+          </div>
+        </form>
+        <a href="{{ url('patients:detail', pk=appointment.patient.pk) }}" class="btn btn-outline-secondary w-100">
+          <i class="bi bi-person me-2"></i>View Patient
+        </a>
+      </div>
+    </div>
+  </div>
+</div>
+{% endblock %}

@@ -1,0 +1,40 @@
+{% extends "base.html" %}
+{% block title %}{{ title }}{% endblock %}
+{% block breadcrumb %}
+<a href="{{ url('doctors:list') }}" class="breadcrumb-item">Doctors</a>
+<span class="breadcrumb-sep">/</span>
+<span class="breadcrumb-item active">{{ title }}</span>
+{% endblock %}
+{% block content %}
+<div class="page-header">
+  <div><h1 class="page-title">{{ title }}</h1></div>
+</div>
+<div class="row g-4">
+  <div class="col-xl-8">
+    <div class="card">
+      <div class="card-header"><h5 class="card-title"><i class="bi bi-person-badge me-2 text-primary"></i>Doctor Details</h5></div>
+      <div class="card-body">
+        <form method="POST">
+          {{ csrf_field(request) }}
+          <div class="row g-3">
+            <div class="col-md-6"><label class="form-label">Doctor Name <span class="text-danger">*</span></label>{{ form.name }}</div>
+            <div class="col-md-6"><label class="form-label">User Account <span class="text-danger">*</span></label>{{ form.user }}</div>
+            <div class="col-md-6"><label class="form-label">Department</label>{{ form.department }}</div>
+            <div class="col-md-6"><label class="form-label">Specialization</label>{{ form.specialization }}</div>
+            <div class="col-md-6"><label class="form-label">Qualification</label>{{ form.qualification }}</div>
+            <div class="col-md-3"><label class="form-label">Experience (Years)</label>{{ form.experience_years }}</div>
+            <div class="col-md-3"><label class="form-label">Consultation Fee</label>{{ form.consultation_fee }}</div>
+            <div class="col-md-6"><label class="form-label">Availability</label>{{ form.availability }}</div>
+            <div class="col-md-6"><label class="form-label">Joining Date</label>{{ form.joining_date }}</div>
+            <div class="col-12"><label class="form-label">Bio</label>{{ form.bio }}</div>
+            <div class="col-12 d-flex gap-2">
+              <button type="submit" class="btn btn-primary"><i class="bi bi-check-lg me-2"></i>Save Doctor</button>
+              <a href="{{ url('doctors:list') }}" class="btn btn-outline-secondary">Cancel</a>
+            </div>
+          </div>
+        </form>
+      </div>
+    </div>
+  </div>
+</div>
+{% endblock %}

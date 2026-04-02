@@ -1,0 +1,6 @@
+services:
+  - type: web
+    name: hms-project
+    env: python
+    buildCommand: "./build.sh"
+    startCommand: "gunicorn hms_fixed.wsgi"

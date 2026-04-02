@@ -1,0 +1,69 @@
+{% extends "base.html" %}
+{% block title %}{{ title }}{% endblock %}
+{% block breadcrumb %}
+<a href="{{ url('patients:list') }}" class="breadcrumb-item">Patients</a>
+<span class="breadcrumb-sep">/</span>
+<span class="breadcrumb-item active">{{ title }}</span>
+{% endblock %}
+
+{% block content %}
+<div class="page-header">
+  <div><h1 class="page-title">{{ title }}</h1><p class="page-subtitle">Fill in the patient details below</p></div>
+</div>
+<form method="POST" enctype="multipart/form-data">
+  {{ csrf_field(request) }}
+  <div class="row g-4">
+    <div class="col-xl-8">
+      <div class="card mb-4">
+        <div class="card-header"><h5 class="card-title"><i class="bi bi-person me-2 text-primary"></i>Personal Information</h5></div>
+        <div class="card-body">
+          <div class="row g-3">
+            <div class="col-md-6"><label class="form-label">First Name <span class="text-danger">*</span></label>{{ form.first_name }}{% if form.first_name.errors %}<div class="text-danger small mt-1">{{ form.first_name.errors[0] }}</div>{% endif %}</div>
+            <div class="col-md-6"><label class="form-label">Last Name <span class="text-danger">*</span></label>{{ form.last_name }}</div>
+            <div class="col-md-4"><label class="form-label">Date of Birth <span class="text-danger">*</span></label>{{ form.date_of_birth }}</div>
+            <div class="col-md-4"><label class="form-label">Gender <span class="text-danger">*</span></label>{{ form.gender }}</div>
+            <div class="col-md-4"><label class="form-label">Blood Group</label>{{ form.blood_group }}</div>
+          </div>
+        </div>
+      </div>
+      <div class="card mb-4">
+        <div class="card-header"><h5 class="card-title"><i class="bi bi-telephone me-2 text-success"></i>Contact Information</h5></div>
+        <div class="card-body">
+          <div class="row g-3">
+            <div class="col-md-6"><label class="form-label">Phone <span class="text-danger">*</span></label>{{ form.phone }}</div>
+            <div class="col-md-6"><label class="form-label">Email</label>{{ form.email }}</div>
+            <div class="col-12"><label class="form-label">Address</label>{{ form.address }}</div>
+            <div class="col-md-6"><label class="form-label">City</label>{{ form.city }}</div>
+            <div class="col-md-6"><label class="form-label">Status</label>{{ form.status }}</div>
+          </div>
+        </div>
+      </div>
+      <div class="card">
+        <div class="card-header"><h5 class="card-title"><i class="bi bi-person-exclamation me-2 text-warning"></i>Emergency Contact</h5></div>
+        <div class="card-body">
+          <div class="row g-3">
+            <div class="col-md-6"><label class="form-label">Contact Name</label>{{ form.emergency_contact_name }}</div>
+            <div class="col-md-6"><label class="form-label">Contact Phone</label>{{ form.emergency_contact_phone }}</div>
+            <div class="col-12"><label class="form-label">Notes</label>{{ form.notes }}</div>
+          </div>
+        </div>
+      </div>
+    </div>
+    <div class="col-xl-4">
+      <div class="card mb-4">
+        <div class="card-header"><h5 class="card-title"><i class="bi bi-image me-2"></i>Patient Photo</h5></div>
+        <div class="card-body text-center">
+          <div class="photo-upload-area mb-3"><i class="bi bi-person-circle" style="font-size:3rem;color:var(--text-muted)"></i><p class="text-muted small mb-0 mt-2">Click to upload</p></div>
+          {{ form.photo }}
+        </div>
+      </div>
+      <div class="card">
+        <div class="card-body">
+          <button type="submit" class="btn btn-primary w-100 mb-2"><i class="bi bi-check-lg me-2"></i>{{ 'Update Patient' if patient else 'Register Patient' }}</button>
+          <a href="{{ url('patients:list') }}" class="btn btn-outline-secondary w-100"><i class="bi bi-x-lg me-2"></i>Cancel</a>
+        </div>
+      </div>
+    </div>
+  </div>
+</form>
+{% endblock %}

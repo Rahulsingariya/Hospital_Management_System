@@ -1,0 +1,111 @@
+{% extends "base.html" %}
+{% block title %}Test Catalogue{% endblock %}
+{% block breadcrumb %}
+<a href="{{ url('lab:orders') }}" class="breadcrumb-item">Laboratory</a>
+<span class="breadcrumb-sep">/</span>
+<span class="breadcrumb-item active">Test Catalogue</span>
+{% endblock %}
+{% block content %}
+<div class="page-header">
+  <div><h1 class="page-title">Test Catalogue</h1><p class="page-subtitle">Available laboratory tests</p></div>
+</div>
+{% if tests %}
+<div class="row g-4">
+  {% for test in tests %}
+  <div class="col-md-6 col-xl-4">
+    <div class="test-card" style="border: 1px solid #e5e7eb; border-radius: 12px; padding: 20px; background: white; transition: all 0.3s cubic-bezier(0.4, 0, 0.2, 1);">
+      <style>
+        .test-card {
+          position: relative;
+        }
+        .test-card:hover {
+          transform: translateY(-4px);
+          border-color: #2563eb;
+          box-shadow: 0 12px 24px rgba(37, 99, 235, 0.12);
+        }
+        .test-icon {
+          width: 52px;
+          height: 52px;
+          border-radius: 10px;
+          display: flex;
+          align-items: center;
+          justify-content: center;
+          font-size: 22px;
+          background: linear-gradient(135deg, #f59e0b, #fbbf24);
+          color: white;
+        }
+        .test-stat {
+          padding: 8px;
+          border-radius: 6px;
+          background-color: #f9fafb;
+          border: 1px solid #e5e7eb;
+        }
+        .test-stat-label {
+          font-size: 10px;
+          font-weight: 600;
+          color: #6b7280;
+          text-transform: uppercase;
+          letter-spacing: 0.5px;
+        }
+        .test-stat-value {
+          font-size: 13px;
+          font-weight: 700;
+          color: #1f2937;
+          margin-top: 2px;
+        }
+      </style>
+
+      <div class="d-flex align-items-start justify-content-between mb-3" style="border-bottom: 1px solid #f3f4f6; padding-bottom: 12px;">
+        <div class="test-icon"><i class="bi bi-eyedropper"></i></div>
+        <div style="text-align: right;">
+          <p style="margin: 0; font-size: 11px; font-weight: 600; color: #6b7280; text-transform: uppercase; letter-spacing: 0.5px;">Code</p>
+          <p style="margin: 4px 0 0; font-size: 12px; color: #1f2937; font-weight: 700;">{{ test.code }}</p>
+        </div>
+      </div>
+
+      <h6 style="margin: 0 0 8px; font-family: 'Poppins', sans-serif; font-weight: 700; font-size: 15px; color: #1f2937;">{{ test.name }}</h6>
+      {% if test.description %}<p style="margin: 0 0 12px; font-size: 12px; color: #6b7280; line-height: 1.4;">{{ test.description[:80] }}{% if test.description|length > 80 %}...{% endif %}</p>{% endif %}
+
+      <div class="row g-2 mb-4">
+        <div class="col-6">
+          <div class="test-stat">
+            <div class="test-stat-label">Category</div>
+            <div class="test-stat-value">{{ test.category }}</div>
+          </div>
+        </div>
+        <div class="col-6">
+          <div class="test-stat">
+            <div class="test-stat-label">Price</div>
+              <div class="test-stat-value">₹{{ "{:.0f}".format(test.price) }}</div>
+          </div>
+        </div>
+        <div class="col-6">
+          <div class="test-stat">
+            <div class="test-stat-label">Turnaround</div>
+            <div class="test-stat-value">{{ test.turnaround_hours }}h</div>
+          </div>
+        </div>
+        <div class="col-6">
+          <div class="test-stat">
+            <div class="test-stat-label">Unit</div>
+            <div class="test-stat-value">{{ test.unit or '—' }}</div>
+          </div>
+        </div>
+      </div>
+
+      <div style="padding: 12px; background-color: #f0f9ff; border-radius: 8px; border-left: 3px solid #0ea5e9;">
+        <p style="margin: 0; font-size: 10px; font-weight: 600; color: #0369a1; text-transform: uppercase; letter-spacing: 0.5px;">Normal Range</p>
+        <p style="margin: 4px 0 0; font-size: 13px; color: #0c4a6e; font-weight: 600;">{{ test.normal_range or '—' }} {{ test.unit or '' }}</p>
+      </div>
+    </div>
+  </div>
+  {% endfor %}
+</div>
+{% else %}
+<div style="border: 1px solid #e5e7eb; border-radius: 12px; padding: 60px 24px; background: white; text-align: center;">
+  <i class="bi bi-eyedropper" style="font-size: 48px; color: #d1d5db; margin-bottom: 16px; display: block;"></i>
+  <h5 style="font-family: 'Poppins', sans-serif; font-weight: 700; color: #1f2937; margin: 0 0 8px;">No tests in catalogue</h5>
+  <p style="color: #6b7280; margin: 0; font-size: 14px;">No laboratory tests have been added yet.</p>
+</div>
+{% endif %}
+{% endblock %}

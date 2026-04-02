@@ -1,0 +1,116 @@
+{% extends "base.html" %}
+{% block title %}Laboratory{% endblock %}
+{% block breadcrumb %}
+<span class="breadcrumb-item">Operations</span><span class="breadcrumb-sep">/</span>
+<span class="breadcrumb-item active">Laboratory</span>
+{% endblock %}
+{% block content %}
+<div class="page-header">
+  <div><h1 class="page-title">Laboratory</h1><p class="page-subtitle">Lab orders and test results</p></div>
+  <div class="page-actions">
+    <a href="{{ url('lab:tests') }}" class="btn btn-outline-secondary"><i class="bi bi-eyedropper me-1"></i>Test Catalogue</a>
+  </div>
+</div>
+{% if orders %}
+<div class="row g-4">
+  {% for order in orders %}
+  <div class="col-md-6 col-xl-4">
+    <div class="lab-card" style="border: 1px solid #e5e7eb; border-radius: 12px; padding: 20px; background: white; transition: all 0.3s cubic-bezier(0.4, 0, 0.2, 1);">
+      <style>
+        .lab-card {
+          position: relative;
+        }
+        .lab-card:hover {
+          transform: translateY(-4px);
+          border-color: #2563eb;
+          box-shadow: 0 12px 24px rgba(37, 99, 235, 0.12);
+        }
+        .lab-avatar {
+          width: 56px;
+          height: 56px;
+          border-radius: 10px;
+          display: flex;
+          align-items: center;
+          justify-content: center;
+          font-size: 20px;
+          font-weight: 700;
+          color: white;
+          background: linear-gradient(135deg, #8b5cf6, #a78bfa);
+        }
+        .lab-stat {
+          padding: 8px;
+          border-radius: 6px;
+          background-color: #f9fafb;
+          border: 1px solid #e5e7eb;
+          text-align: center;
+        }
+        .lab-stat-label {
+          font-size: 10px;
+          font-weight: 600;
+          color: #6b7280;
+          text-transform: uppercase;
+          letter-spacing: 0.5px;
+        }
+        .lab-stat-value {
+          font-size: 13px;
+          font-weight: 700;
+          color: #1f2937;
+          margin-top: 2px;
+        }
+      </style>
+
+      <div class="d-flex align-items-start justify-content-between mb-3" style="border-bottom: 1px solid #f3f4f6; padding-bottom: 12px;">
+        <div>
+          <p style="margin: 0; font-size: 11px; font-weight: 600; color: #6b7280; text-transform: uppercase; letter-spacing: 0.5px;">Lab Order</p>
+        </div>
+        <span class="badge {% if order.status == 'completed' %}bg-success-subtle text-success{% elif order.status == 'cancelled' %}bg-danger-subtle text-danger{% elif order.status == 'processing' %}bg-warning-subtle text-warning{% else %}bg-info-subtle text-info{% endif %}" style="font-size: 11px; padding: 6px 10px; white-space: nowrap;">
+          <span style="display: inline-block; width: 6px; height: 6px; border-radius: 50%; background-color: currentColor; margin-right: 4px; vertical-align: middle;"></span>
+          {{ order.get_status_display() }}
+        </span>
+      </div>
+
+      <div class="d-flex align-items-center gap-2 mb-4">
+        <div class="lab-avatar">{{ order.patient.first_name[0] }}</div>
+        <div style="flex: 1;">
+          <p style="margin: 0; font-weight: 700; font-size: 14px; color: #1f2937;">{{ order.patient.full_name }}</p>
+          <p style="margin: 2px 0 0; font-size: 11px; color: #6b7280;">{{ order.patient.patient_id }}</p>
+        </div>
+      </div>
+
+      {% if order.doctor %}
+      <div class="mb-4" style="padding: 12px; background-color: #f9fafb; border-radius: 8px; border-left: 3px solid #2563eb;">
+        <p style="margin: 0; font-size: 10px; font-weight: 600; color: #6b7280; text-transform: uppercase; letter-spacing: 0.5px;">Doctor</p>
+        <p style="margin: 4px 0 0; font-weight: 600; color: #1f2937; font-size: 13px;">{{ order.doctor.name or order.doctor.full_name }}</p>
+      </div>
+      {% endif %}
+
+      <div class="row g-2 mb-4">
+        <div class="col-6">
+          <div class="lab-stat">
+            <div class="lab-stat-label">Ordered</div>
+            <div class="lab-stat-value">{{ order.ordered_date.strftime('%d %b') }}</div>
+          </div>
+        </div>
+        <div class="col-6">
+          <div class="lab-stat">
+            <div class="lab-stat-label">Tests</div>
+            <div class="lab-stat-value">{{ order.tests.count() }}</div>
+          </div>
+        </div>
+      </div>
+
+      <div class="d-flex gap-2">
+        <a href="{{ url('lab:order_detail', order.pk) }}" class="btn btn-outline-primary btn-sm w-100" style="font-size: 12px;"><i class="bi bi-eye"></i> View Order</a>
+      </div>
+    </div>
+  </div>
+  {% endfor %}
+</div>
+{% else %}
+<div style="border: 1px solid #e5e7eb; border-radius: 12px; padding: 60px 24px; background: white; text-align: center;">
+  <i class="bi bi-eyedropper" style="font-size: 48px; color: #d1d5db; margin-bottom: 16px; display: block;"></i>
+  <h5 style="font-family: 'Poppins', sans-serif; font-weight: 700; color: #1f2937; margin: 0 0 8px;">No lab orders found</h5>
+  <p style="color: #6b7280; margin: 0 0 20px; font-size: 14px;">No laboratory orders have been created yet.</p>
+</div>
+{% endif %}
+{% endblock %}

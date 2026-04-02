@@ -1,0 +1,37 @@
+{% extends "base.html" %}
+{% block title %}Departments{% endblock %}
+{% block breadcrumb %}
+<a href="{{ url('doctors:list') }}" class="breadcrumb-item">Doctors</a>
+<span class="breadcrumb-sep">/</span>
+<span class="breadcrumb-item active">Departments</span>
+{% endblock %}
+{% block content %}
+<div class="page-header">
+  <div><h1 class="page-title">Departments</h1><p class="page-subtitle">Hospital departments and their heads</p></div>
+</div>
+<div class="row g-4">
+  {% for dept in departments %}
+  <div class="col-md-6 col-xl-4">
+    <div class="card h-100">
+      <div class="card-body">
+        <div class="d-flex align-items-center gap-3 mb-3">
+          <div class="stat-icon stat-card-blue" style="width:44px;height:44px;border-radius:10px;background:var(--primary-light);color:var(--primary);display:flex;align-items:center;justify-content:center;font-size:18px">
+            <i class="bi bi-building-fill-cross"></i>
+          </div>
+          <div>
+            <h6 class="fw-bold mb-0">{{ dept.name }}</h6>
+            {% if dept.head_doctor %}<div class="text-muted small">Head: {{ dept.head_doctor.full_name }}</div>{% endif %}
+          </div>
+        </div>
+        {% if dept.description %}<p class="small text-muted">{{ dept.description }}</p>{% endif %}
+        <div class="badge bg-primary-subtle text-primary">{{ dept.doctor_set.count() }} doctors</div>
+      </div>
+    </div>
+  </div>
+  {% else %}
+  <div class="col-12">
+    <div class="card"><div class="card-body empty-state"><i class="bi bi-building"></i><h5>No departments yet</h5><p>Create departments from the admin panel.</p></div></div>
+  </div>
+  {% endfor %}
+</div>
+{% endblock %}

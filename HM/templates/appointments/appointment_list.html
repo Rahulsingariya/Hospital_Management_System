@@ -1,0 +1,159 @@
+{% extends "base.html" %}
+{% block title %}Appointments{% endblock %}
+{% block breadcrumb %}
+<span class="breadcrumb-item">Patient Care</span>
+<span class="breadcrumb-sep">/</span>
+<span class="breadcrumb-item active">Appointments</span>
+{% endblock %}
+
+{% block content %}
+<div class="page-header">
+  <div><h1 class="page-title">Appointments</h1><p class="page-subtitle">Schedule and manage patient appointments</p></div>
+  <div class="page-actions">
+    <a href="{{ url('appointments:create') }}" class="btn btn-primary"><i class="bi bi-calendar-plus"></i> Book Appointment</a>
+  </div>
+</div>
+
+<div class="card mb-4">
+  <div class="card-body">
+    <form method="GET" class="row g-3 align-items-end">
+      <div class="col-md-4">
+        <label class="form-label">Search</label>
+        <div class="input-group">
+          <span class="input-group-text"><i class="bi bi-search"></i></span>
+          <input type="text" name="q" value="{{ query }}" class="form-control" placeholder="Patient, doctor, ID..."/>
+        </div>
+      </div>
+      <div class="col-md-3">
+        <label class="form-label">Status</label>
+        <select name="status" class="form-select">
+          <option value="">All Statuses</option>
+          <option value="scheduled" {{ 'selected' if status == 'scheduled' }}>Scheduled</option>
+          <option value="confirmed" {{ 'selected' if status == 'confirmed' }}>Confirmed</option>
+          <option value="in_progress" {{ 'selected' if status == 'in_progress' }}>In Progress</option>
+          <option value="completed" {{ 'selected' if status == 'completed' }}>Completed</option>
+          <option value="cancelled" {{ 'selected' if status == 'cancelled' }}>Cancelled</option>
+        </select>
+      </div>
+      <div class="col-md-3">
+        <label class="form-label">Date</label>
+        <input type="date" name="date" class="form-control"/>
+      </div>
+      <div class="col-md-2">
+        <button type="submit" class="btn btn-primary w-100"><i class="bi bi-funnel"></i> Filter</button>
+      </div>
+    </form>
+  </div>
+</div>
+
+<div class="row g-4">
+  {% if appointments %}
+  {% for appt in appointments %}
+  <div class="col-md-6 col-xl-4">
+    <div class="appointment-card" style="border: 1px solid #e5e7eb; border-radius: 12px; padding: 20px; background: white; transition: all 0.3s cubic-bezier(0.4, 0, 0.2, 1);">
+      <style>
+        .appointment-card {
+          position: relative;
+        }
+        .appointment-card:hover {
+          transform: translateY(-4px);
+          border-color: #2563eb;
+          box-shadow: 0 12px 24px rgba(37, 99, 235, 0.12);
+        }
+        .avatar-circle-appt {
+          width: 56px;
+          height: 56px;
+          border-radius: 10px;
+          display: flex;
+          align-items: center;
+          justify-content: center;
+          font-size: 20px;
+          font-weight: 700;
+          color: white;
+        }
+        .appt-stat-mini {
+          padding: 8px;
+          border-radius: 6px;
+          background-color: #f9fafb;
+          border: 1px solid #e5e7eb;
+          text-align: center;
+        }
+        .appt-stat-label {
+          font-size: 10px;
+          font-weight: 600;
+          color: #6b7280;
+          text-transform: uppercase;
+          letter-spacing: 0.5px;
+        }
+        .appt-stat-value {
+          font-size: 13px;
+          font-weight: 700;
+          color: #1f2937;
+          margin-top: 2px;
+        }
+      </style>
+
+      <div class="d-flex align-items-start justify-content-between mb-3" style="border-bottom: 1px solid #f3f4f6; padding-bottom: 12px;">
+        <div>
+          <p style="margin: 0; font-size: 11px; font-weight: 600; color: #6b7280; text-transform: uppercase; letter-spacing: 0.5px;">{{ appt.get_appointment_type_display() }}</p>
+          <p style="margin: 4px 0 0; font-size: 12px; color: #6b7280; font-weight: 500;">ID: <code style="background: #f3f4f6; padding: 2px 6px; border-radius: 4px;">{{ appt.appointment_id }}</code></p>
+        </div>
+        <span class="badge {% if appt.status == 'scheduled' %}bg-info-subtle text-info{% elif appt.status == 'confirmed' %}bg-success-subtle text-success{% elif appt.status == 'in_progress' %}bg-warning-subtle text-warning{% elif appt.status == 'completed' %}bg-primary-subtle text-primary{% else %}bg-danger-subtle text-danger{% endif %}" style="font-size: 11px; padding: 6px 10px; white-space: nowrap;">
+          <span style="display: inline-block; width: 6px; height: 6px; border-radius: 50%; background-color: currentColor; margin-right: 4px; vertical-align: middle;"></span>
+          {{ appt.get_status_display() }}
+        </span>
+      </div>
+
+      <div class="mb-4">
+        <h6 style="margin: 0 0 8px; font-family: 'Poppins', sans-serif; font-weight: 700; font-size: 13px; color: #6b7280; text-transform: uppercase; letter-spacing: 0.5px;">Patient</h6>
+        <div class="d-flex align-items-center gap-2">
+          <div class="avatar-circle-appt" style="background: linear-gradient(135deg, #3b82f6, #60a5fa);">{{ appt.patient.first_name[0] }}</div>
+          <div style="flex: 1;">
+            <p style="margin: 0; font-weight: 700; font-size: 14px; color: #1f2937;">{{ appt.patient.full_name }}</p>
+            <p style="margin: 2px 0 0; font-size: 11px; color: #6b7280;">{{ appt.patient.patient_id }}</p>
+          </div>
+        </div>
+      </div>
+
+      <div class="mb-4">
+        <h6 style="margin: 0 0 8px; font-family: 'Poppins', sans-serif; font-weight: 700; font-size: 13px; color: #6b7280; text-transform: uppercase; letter-spacing: 0.5px;">Doctor</h6>
+        <div class="d-flex align-items-center gap-2">
+          <div class="avatar-circle-appt" style="background: linear-gradient(135deg, #ec4899, #f472b6);">{{ appt.doctor.name[0] if appt.doctor.name else appt.doctor.first_name[0] }}</div>
+          <div style="flex: 1;">
+            <p style="margin: 0; font-weight: 700; font-size: 14px; color: #1f2937;">{{ appt.doctor.name or appt.doctor.full_name }}</p>
+            <p style="margin: 2px 0 0; font-size: 11px; color: #6b7280;">{{ appt.doctor.department.name if appt.doctor.department else '—' }}</p>
+          </div>
+        </div>
+      </div>
+
+      <div class="row g-2 mb-4">
+        <div class="col-6">
+          <div class="appt-stat-mini">
+            <div class="appt-stat-label">Date</div>
+            <div class="appt-stat-value">{{ appt.appointment_date.strftime('%d %b') }}</div>
+          </div>
+        </div>
+        <div class="col-6">
+          <div class="appt-stat-mini">
+            <div class="appt-stat-label">Time</div>
+            <div class="appt-stat-value">{{ appt.appointment_time.strftime('%I:%M') }}</div>
+          </div>
+        </div>
+      </div>
+
+      <div class="d-flex gap-2">
+        <a href="{{ url('appointments:detail', appt.pk) }}" class="btn btn-outline-primary btn-sm w-100" style="font-size: 12px;"><i class="bi bi-eye"></i> View Details</a>
+      </div>
+    </div>
+  </div>
+  {% endfor %}
+  {% else %}
+  <div style="border: 1px solid #e5e7eb; border-radius: 12px; padding: 60px 24px; background: white; text-align: center;">
+    <i class="bi bi-calendar-x" style="font-size: 48px; color: #d1d5db; margin-bottom: 16px; display: block;"></i>
+    <h5 style="font-family: 'Poppins', sans-serif; font-weight: 700; color: #1f2937; margin: 0 0 8px;">No appointments found</h5>
+    <p style="color: #6b7280; margin: 0 0 20px; font-size: 14px;">Try adjusting your search or book a new appointment.</p>
+    <a href="{{ url('appointments:create') }}" class="btn btn-primary"><i class="bi bi-calendar-plus"></i> Book Appointment</a>
+  </div>
+  {% endif %}
+</div>
+{% endblock %}

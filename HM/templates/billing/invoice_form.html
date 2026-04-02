@@ -1,0 +1,41 @@
+{% extends "base.html" %}
+{% block title %}New Invoice{% endblock %}
+{% block breadcrumb %}
+<a href="{{ url('billing:list') }}" class="breadcrumb-item">Billing</a>
+<span class="breadcrumb-sep">/</span>
+<span class="breadcrumb-item active">New Invoice</span>
+{% endblock %}
+{% block content %}
+<div class="page-header">
+  <div><h1 class="page-title">Create Invoice</h1></div>
+</div>
+<div class="row g-4">
+  <div class="col-xl-8">
+    <div class="card">
+      <div class="card-header"><h5 class="card-title"><i class="bi bi-receipt me-2 text-primary"></i>Invoice Details</h5></div>
+      <div class="card-body">
+        <form method="POST">
+          <input type="hidden" name="csrfmiddlewaretoken" value="{{ csrf_token }}" />
+          <div class="row g-3">
+            <div class="col-12"><label class="form-label">Patient <span class="text-danger">*</span></label>{{ form.patient }}</div>
+            <div class="col-12"><label class="form-label">Appointment</label>{{ form.appointment }}</div>
+            <div class="col-md-6"><label class="form-label">Due Date <span class="text-danger">*</span></label>{{ form.due_date }}</div>
+            <div class="col-md-6"><label class="form-label">Status</label>{{ form.status }}</div>
+            <div class="col-md-6"><label class="form-label">Payment Method</label>{{ form.payment_method }}</div>
+            <div class="col-md-3"><label class="form-label">Subtotal</label>{{ form.subtotal }}</div>
+            <div class="col-md-3"><label class="form-label">Discount</label>{{ form.discount }}</div>
+            <div class="col-md-3"><label class="form-label">Tax</label>{{ form.tax }}</div>
+            <div class="col-md-3"><label class="form-label">Total</label>{{ form.total }}</div>
+            <div class="col-md-6"><label class="form-label">Amount Paid</label>{{ form.amount_paid }}</div>
+            <div class="col-12"><label class="form-label">Notes</label>{{ form.notes }}</div>
+            <div class="col-12 d-flex gap-2">
+              <button type="submit" class="btn btn-primary"><i class="bi bi-check-lg me-2"></i>Create Invoice</button>
+              <a href="{{ url('billing:list') }}" class="btn btn-outline-secondary">Cancel</a>
+            </div>
+          </div>
+        </form>
+      </div>
+    </div>
+  </div>
+</div>
+{% endblock %}
