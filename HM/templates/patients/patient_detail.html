@@ -22,7 +22,7 @@
   <div class="col-xl-4">
     <div class="card mb-4" style="border: 1px solid #e5e7eb; border-radius: 12px; overflow: hidden; box-shadow: 0 4px 12px rgba(0,0,0,0.05);">
       <div style="background: linear-gradient(135deg, #667eea 0%, #764ba2 100%); padding: 24px; text-align: center; color: white;">
-        <div style="width: 90px; height: 90px; border-radius: 16px; background: rgba(255,255,255,0.2); display: flex; align-items: center; justify-content: center; font-size: 36px; font-weight: 800; margin: 0 auto 16px; border: 2px solid rgba(255,255,255,0.3);">{{ patient.first_name[0] }}</div>
+        <div style="width: 90px; height: 90px; border-radius: 16px; background: rgba(255,255,255,0.2); display: flex; align-items: center; justify-content: center; font-size: 36px; font-weight: 800; margin: 0 auto 16px; border: 2px solid rgba(255,255,255,0.3);">{{ patient.first_name|slice:":1" }}</div>
         <h3 style="margin: 0 0 8px; font-family: 'Poppins', sans-serif; font-weight: 700; font-size: 18px;">{{ patient.full_name }}</h3>
         <p style="margin: 0 0 12px; font-size: 12px; opacity: 0.9;">{{ patient.patient_id }}</p>
         <span class="badge {% if patient.status == 'active' %}bg-success-subtle text-success{% elif patient.status == 'inactive' %}bg-secondary-subtle text-secondary{% else %}bg-warning-subtle text-warning{% endif %}" style="font-size: 11px; padding: 6px 12px;">

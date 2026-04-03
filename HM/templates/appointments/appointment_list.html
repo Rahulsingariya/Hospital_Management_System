@@ -107,7 +107,7 @@
       <div class="mb-4">
         <h6 style="margin: 0 0 8px; font-family: 'Poppins', sans-serif; font-weight: 700; font-size: 13px; color: #6b7280; text-transform: uppercase; letter-spacing: 0.5px;">Patient</h6>
         <div class="d-flex align-items-center gap-2">
-          <div class="avatar-circle-appt" style="background: linear-gradient(135deg, #3b82f6, #60a5fa);">{{ appt.patient.first_name[0] }}</div>
+          <div class="avatar-circle-appt" style="background: linear-gradient(135deg, #3b82f6, #60a5fa);">{{ appt.patient.first_name|slice:":1" }}</div>
           <div style="flex: 1;">
             <p style="margin: 0; font-weight: 700; font-size: 14px; color: #1f2937;">{{ appt.patient.full_name }}</p>
             <p style="margin: 2px 0 0; font-size: 11px; color: #6b7280;">{{ appt.patient.patient_id }}</p>
@@ -118,7 +118,7 @@
       <div class="mb-4">
         <h6 style="margin: 0 0 8px; font-family: 'Poppins', sans-serif; font-weight: 700; font-size: 13px; color: #6b7280; text-transform: uppercase; letter-spacing: 0.5px;">Doctor</h6>
         <div class="d-flex align-items-center gap-2">
-          <div class="avatar-circle-appt" style="background: linear-gradient(135deg, #ec4899, #f472b6);">{{ appt.doctor.name[0] if appt.doctor.name else appt.doctor.first_name[0] }}</div>
+          <div class="avatar-circle-appt" style="background: linear-gradient(135deg, #ec4899, #f472b6);">{{ appt.doctor.name|slice:":1" if appt.doctor.name else appt.doctor.first_name|slice:":1" }}</div>
           <div style="flex: 1;">
             <p style="margin: 0; font-weight: 700; font-size: 14px; color: #1f2937;">{% if appt.doctor.name %}{{ appt.doctor.name }}{% else %}{{ appt.doctor.full_name }}{% endif %}</p>
             <p style="margin: 2px 0 0; font-size: 11px; color: #6b7280;">{{ appt.doctor.department.name if appt.doctor.department else '—' }}</p>

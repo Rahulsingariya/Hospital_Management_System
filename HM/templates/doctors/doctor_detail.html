@@ -22,7 +22,7 @@
   <div class="card-body p-4">
     <div class="row g-4 align-items-center">
       <div class="col-auto">
-        <div class="profile-avatar-lg">{{ doctor.name[0] }}</div>
+        <div class="profile-avatar-lg">{{ doctor.name|slice:":1" }}</div>
       </div>
       <div class="col">
         <div class="mb-2">
@@ -219,7 +219,7 @@
                 <td>
                   <div class="d-flex align-items-center gap-2">
                     <div class="avatar-circle avatar-circle-sm" style="background: linear-gradient(135deg, #0066cc, #0099ff);">
-                      {{ appt.patient.first_name[0] if appt.patient.first_name else 'P' }}
+                      {{ appt.patient.first_name|slice:":1" if appt.patient.first_name else 'P' }}
                     </div>
                     <div>
                       <span class="fw-semibold small">{{ appt.patient.full_name }}</span><br>

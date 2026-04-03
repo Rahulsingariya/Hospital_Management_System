@@ -93,11 +93,11 @@
 
       <div class="d-flex align-items-start gap-3 mb-3">
         {% if patient.gender == 'M' %}
-        <div class="avatar-circle-lg-patient" style="background: linear-gradient(135deg, #3b82f6, #60a5fa);">{{ patient.first_name[0] }}</div>
+        <div class="avatar-circle-lg-patient" style="background: linear-gradient(135deg, #3b82f6, #60a5fa);">{{ patient.first_name|slice:":1" }}</div>
         {% elif patient.gender == 'F' %}
-        <div class="avatar-circle-lg-patient" style="background: linear-gradient(135deg, #ec4899, #f472b6);">{{ patient.first_name[0] }}</div>
+        <div class="avatar-circle-lg-patient" style="background: linear-gradient(135deg, #ec4899, #f472b6);">{{ patient.first_name|slice:":1" }}</div>
         {% else %}
-        <div class="avatar-circle-lg-patient" style="background: linear-gradient(135deg, #8b5cf6, #a78bfa);">{{ patient.first_name[0] }}</div>
+        <div class="avatar-circle-lg-patient" style="background: linear-gradient(135deg, #8b5cf6, #a78bfa);">{{ patient.first_name|slice:":1" }}</div>
         {% endif %}
         <div style="flex: 1;">
           <h6 style="margin: 0; font-family: 'Poppins', sans-serif; font-weight: 700; font-size: 15px; color: #1f2937;">{{ patient.full_name }}</h6>
