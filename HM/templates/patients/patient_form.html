@@ -11,7 +11,7 @@
   <div><h1 class="page-title">{{ title }}</h1><p class="page-subtitle">Fill in the patient details below</p></div>
 </div>
 <form method="POST" enctype="multipart/form-data">
-  {{ csrf_field(request) }}
+  {% csrf_token %}
   <div class="row g-4">
     <div class="col-xl-8">
       <div class="card mb-4">

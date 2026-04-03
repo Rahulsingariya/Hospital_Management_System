@@ -15,7 +15,7 @@
       <div class="card-header"><h5 class="card-title"><i class="bi bi-calendar-plus me-2 text-primary"></i>Appointment Details</h5></div>
       <div class="card-body">
         <form method="POST">
-          {{ csrf_field(request) }}
+          {% csrf_token %}
           <div class="row g-3">
             <div class="col-12"><label class="form-label">Patient <span class="text-danger">*</span></label>{{ form.patient }}</div>
             <div class="col-12"><label class="form-label">Doctor <span class="text-danger">*</span></label>{{ form.doctor }}</div>

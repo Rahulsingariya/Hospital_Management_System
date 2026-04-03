@@ -133,7 +133,7 @@
         <div class="col-6">
           <div class="stat-mini-patient">
             <div class="stat-mini-patient-label">Registered</div>
-            <div class="stat-mini-patient-value">{{ patient.registered_at.strftime('%b %Y') }}</div>
+            <div class="stat-mini-patient-value">{{ patient.registered_at|date:"b Y" }}</div>
           </div>
         </div>
       </div>

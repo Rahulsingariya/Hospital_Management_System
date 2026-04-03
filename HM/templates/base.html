@@ -71,8 +71,8 @@
       <div class="user-avatar-placeholder">{{ request.user.first_name[0] if request.user.first_name else request.user.username[0] }}</div>
     {% endif %}
     <div class="user-details">
-      <span class="user-name">{{ request.user.get_full_name() or request.user.username }}</span>
-      <span class="user-role">{{ request.user.get_role_display() }}</span>
+      <span class="user-name">{{ request.user.get_full_name or request.user.username }}</span>
+      <span class="user-role">{{ request.user.get_role_display }}</span>
     </div>
     <a href="{% url 'accounts:logout' %}" class="btn-logout" title="Logout">
       <i class="bi bi-box-arrow-right"></i>
@@ -97,7 +97,7 @@
   </nav>
 
   <div class="alerts-container" style="padding:12px 24px 0">
-    {% for message in get_messages(request) %}
+    {% for message in messages %}
     <div class="alert alert-{{ 'danger' if message.tags == 'error' else message.tags }} alert-dismissible fade show" role="alert">
       <i class="bi bi-{% if message.tags == 'success' %}check-circle{% elif message.tags in ['error','danger'] %}exclamation-triangle{% else %}info-circle{% endif %}-fill me-2"></i>
       {{ message }}

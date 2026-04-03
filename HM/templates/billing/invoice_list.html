@@ -17,7 +17,7 @@
     <div class="stat-card stat-card-green">
       <div class="stat-icon"><i class="bi bi-check-circle-fill"></i></div>
       <div class="stat-body">
-        <div class="stat-number">₹{{ "{:,.0f}".format(total_revenue) }}</div>
+        <div class="stat-number">₹{{ total_revenue|floatformat:"0"|add:"0" }}</div>
         <div class="stat-label">Total Revenue (Paid)</div>
       </div>
     </div>
@@ -26,7 +26,7 @@
     <div class="stat-card stat-card-orange">
       <div class="stat-icon"><i class="bi bi-hourglass-split"></i></div>
       <div class="stat-body">
-        <div class="stat-number">₹{{ "{:,.0f}".format(pending_amount) }}</div>
+        <div class="stat-number">₹{{ pending_amount|floatformat:"0"|add:"0" }}</div>
         <div class="stat-label">Pending Amount</div>
       </div>
     </div>
@@ -114,7 +114,7 @@
         </div>
         <span class="badge {% if inv.status == 'paid' %}bg-success-subtle text-success{% elif inv.status in ['sent','partial'] %}bg-warning-subtle text-warning{% elif inv.status == 'overdue' %}bg-danger-subtle text-danger{% else %}bg-secondary-subtle text-secondary{% endif %}" style="font-size: 11px; padding: 6px 10px; white-space: nowrap;">
           <span style="display: inline-block; width: 6px; height: 6px; border-radius: 50%; background-color: currentColor; margin-right: 4px; vertical-align: middle;"></span>
-          {{ inv.get_status_display() }}
+          {{ inv.get_status_display }}
         </span>
       </div>
 
@@ -130,25 +130,25 @@
         <div class="col-6">
           <div class="invoice-stat">
             <div class="invoice-stat-label">Issue Date</div>
-            <div class="invoice-stat-value">{{ inv.issue_date.strftime('%d %b') }}</div>
+            <div class="invoice-stat-value">{{ inv.issue_date|date:"d b" }}</div>
           </div>
         </div>
         <div class="col-6">
           <div class="invoice-stat">
             <div class="invoice-stat-label">Due Date</div>
-            <div class="invoice-stat-value">{{ inv.due_date.strftime('%d %b') }}</div>
+            <div class="invoice-stat-value">{{ inv.due_date|date:"d b" }}</div>
           </div>
         </div>
         <div class="col-6">
           <div class="invoice-stat">
             <div class="invoice-stat-label">Total</div>
-            <div class="invoice-stat-value" style="color: #0f766e;">₹{{ "{:.0f}".format(inv.total) }}</div>
+            <div class="invoice-stat-value" style="color: #0f766e;">₹{{ inv.total|floatformat:"0" }}</div>
           </div>
         </div>
         <div class="col-6">
           <div class="invoice-stat">
             <div class="invoice-stat-label">Paid</div>
-            <div class="invoice-stat-value" style="color: #16a34a;">₹{{ "{:.0f}".format(inv.amount_paid) }}</div>
+            <div class="invoice-stat-value" style="color: #16a34a;">₹{{ inv.amount_paid|floatformat:"0" }}</div>
           </div>
         </div>
       </div>

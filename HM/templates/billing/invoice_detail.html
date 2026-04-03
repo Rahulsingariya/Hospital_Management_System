@@ -18,7 +18,7 @@
           <div class="col-12"><label class="form-label">Patient</label><p>{{ invoice.patient.full_name }}</p></div>
           <div class="col-12"><label class="form-label">Appointment</label><p>{{ invoice.appointment or "N/A" }}</p></div>
           <div class="col-md-6"><label class="form-label">Due Date</label><p>{{ invoice.due_date }}</p></div>
-          <div class="col-md-6"><label class="form-label">Status</label><p><span class="badge bg-info">{{ invoice.get_status_display() }}</span></p></div>
+          <div class="col-md-6"><label class="form-label">Status</label><p><span class="badge bg-info">{{ invoice.get_status_display }}</span></p></div>
           <div class="col-md-6"><label class="form-label">Payment Method</label><p>{{ invoice.payment_method or "N/A" }}</p></div>
           <div class="col-md-3"><label class="form-label">Subtotal</label><p>₹{{ invoice.subtotal }}</p></div>
           <div class="col-md-3"><label class="form-label">Discount</label><p>₹{{ invoice.discount }}</p></div>

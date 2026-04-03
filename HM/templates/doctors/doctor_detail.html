@@ -100,7 +100,7 @@
           </div>
           <div class="info-item">
             <div class="info-label">Joining Date</div>
-            <div class="info-value">{{ doctor.joining_date.strftime('%d %B %Y') if doctor.joining_date else '—' }}</div>
+            <div class="info-value">{{ doctor.joining_date|date:"d b Y" if doctor.joining_date else '—' }}</div>
           </div>
           <div class="info-item">
             <div class="info-label">Availability</div>
@@ -179,7 +179,7 @@
               {% for s in schedules %}
               <tr>
                 <td class="fw-semibold">{{ s.get_day_of_week_display() }}</td>
-                <td>{{ s.start_time.strftime('%H:%M') }} – {{ s.end_time.strftime('%H:%M') }}</td>
+                <td>{{ s.start_time|time:"H:i" }} – {{ s.end_time|time:"H:i" }}</td>
                 <td>{{ s.max_appointments }}</td>
                 <td>
                   <span class="badge {% if s.is_active %}bg-success{% else %}bg-secondary{% endif %}">
@@ -228,8 +228,8 @@
                   </div>
                 </td>
                 <td class="small">
-                  <div>{{ appt.appointment_date.strftime('%d %b %Y') }}</div>
-                  <small class="text-muted">{{ appt.appointment_time.strftime('%H:%M') if appt.appointment_time else '—' }}</small>
+                  <div>{{ appt.appointment_date|date:"d b Y" }}</div>
+                  <small class="text-muted">{{ appt.appointment_time|time:"H:i" if appt.appointment_time else '—' }}</small>
                 </td>
                 <td>
                   <span class="badge type-badge-{{ appt.appointment_type }}">

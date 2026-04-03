@@ -102,19 +102,19 @@
         <div class="col-6">
           <div class="med-stat">
             <div class="med-stat-label">Price</div>
-              <div class="med-stat-value">₹{{ "{:.0f}".format(med.selling_price) }}</div>
+              <div class="med-stat-value">₹{{ med.selling_price|floatformat:"0" }}</div>
           </div>
         </div>
         <div class="col-6">
           <div class="med-stat">
             <div class="med-stat-label">Cost</div>
-              <div class="med-stat-value">₹{{ "{:.0f}".format(med.cost_price) }}</div>
+              <div class="med-stat-value">₹{{ med.cost_price|floatformat:"0" }}</div>
           </div>
         </div>
         <div class="col-6">
           <div class="med-stat">
             <div class="med-stat-label">Expires</div>
-            <div class="med-stat-value">{{ med.expiry_date.strftime('%b %Y') if med.expiry_date else '—' }}</div>
+            <div class="med-stat-value">{{ med.expiry_date|date:"b Y" if med.expiry_date else '—' }}</div>
           </div>
         </div>
       </div>

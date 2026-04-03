@@ -17,7 +17,7 @@
       <div class="card-header"><h5 class="card-title"><i class="bi bi-file-medical me-2 text-primary"></i>Medical Record</h5></div>
       <div class="card-body">
         <form method="POST">
-          {{ csrf_field(request) }}
+          {% csrf_token %}
           <div class="row g-3">
             <div class="col-12"><label class="form-label">Doctor</label>{{ form.doctor }}</div>
             <div class="col-12"><label class="form-label">Chief Complaint <span class="text-danger">*</span></label>{{ form.chief_complaint }}</div>

@@ -63,7 +63,7 @@
         <p style="margin: 0; font-size: 11px; font-weight: 600; color: #6b7280; text-transform: uppercase; letter-spacing: 0.5px;">Prescription</p>
         <span class="badge {% if rx.status == 'dispensed' %}bg-success-subtle text-success{% elif rx.status == 'cancelled' %}bg-danger-subtle text-danger{% else %}bg-warning-subtle text-warning{% endif %}" style="font-size: 11px; padding: 6px 10px; white-space: nowrap;">
           <span style="display: inline-block; width: 6px; height: 6px; border-radius: 50%; background-color: currentColor; margin-right: 4px; vertical-align: middle;"></span>
-          {{ rx.get_status_display() }}
+          {{ rx.get_status_display }}
         </span>
       </div>
 
@@ -84,7 +84,7 @@
         <div class="col-12">
           <div class="rx-stat">
             <div class="rx-stat-label">Issued Date</div>
-            <div class="rx-stat-value">{{ rx.issued_date.strftime('%d %b %Y') }}</div>
+            <div class="rx-stat-value">{{ rx.issued_date|date:"d b Y" }}</div>
           </div>
         </div>
       </div>
@@ -92,11 +92,11 @@
       <div class="mt-auto pt-2">
         {% if rx.status == 'pending' %}
         <form method="POST" action="{% url 'pharmacy:dispense' rx.pk %}" style="width: 100%;">
-          {{ csrf_field(request) }}
+          {% csrf_token %}
           <button type="submit" class="btn btn-success btn-sm w-100" style="font-size: 12px;"><i class="bi bi-check-lg"></i> Dispense Prescription</button>
         </form>
         {% else %}
-        <button class="btn btn-outline-secondary btn-sm w-100 disabled" style="font-size: 12px; opacity: 0.6; cursor: not-allowed;"><i class="bi bi-check-lg"></i> Already {{ rx.get_status_display()|lower }}</button>
+        <button class="btn btn-outline-secondary btn-sm w-100 disabled" style="font-size: 12px; opacity: 0.6; cursor: not-allowed;"><i class="bi bi-check-lg"></i> Already {{ rx.get_status_display|lower }}</button>
         {% endif %}
       </div>
     </div>

@@ -20,10 +20,10 @@
         <div class="info-grid">
           <div class="info-item"><div class="info-label">Patient</div><div class="info-value">{{ appointment.patient.full_name }}</div></div>
           <div class="info-item"><div class="info-label">Doctor</div><div class="info-value">{{ appointment.doctor.full_name }}</div></div>
-          <div class="info-item"><div class="info-label">Date</div><div class="info-value">{{ appointment.appointment_date.strftime('%d %b %Y') }}</div></div>
-          <div class="info-item"><div class="info-label">Time</div><div class="info-value">{{ appointment.appointment_time.strftime('%I:%M %p') }}</div></div>
+          <div class="info-item"><div class="info-label">Date</div><div class="info-value">{{ appointment.appointment_date|date:"d b Y" }}</div></div>
+          <div class="info-item"><div class="info-label">Time</div><div class="info-value">{{ appointment.appointment_time|time:"h:i A" }}</div></div>
           <div class="info-item"><div class="info-label">Type</div><div class="info-value"><span class="badge type-badge-{{ appointment.appointment_type }}">{{ appointment.get_appointment_type_display() }}</span></div></div>
-          <div class="info-item"><div class="info-label">Status</div><div class="info-value"><span class="status-dot status-{{ appointment.status }}">{{ appointment.get_status_display() }}</span></div></div>
+          <div class="info-item"><div class="info-label">Status</div><div class="info-value"><span class="status-dot status-{{ appointment.status }}">{{ appointment.get_status_display }}</span></div></div>
         </div>
         {% if appointment.reason %}<div class="mt-3"><div class="info-label">Reason</div><div class="info-value">{{ appointment.reason }}</div></div>{% endif %}
         {% if appointment.notes %}<div class="mt-3"><div class="info-label">Notes</div><div class="info-value">{{ appointment.notes }}</div></div>{% endif %}
@@ -35,7 +35,7 @@
       <div class="card-header"><h5 class="card-title"><i class="bi bi-arrow-repeat me-2 text-warning"></i>Update Status</h5></div>
       <div class="card-body">
         <form method="POST" action="{% url 'appointments:update_status' appointment.pk %}">
-          {{ csrf_field(request) }}
+          {% csrf_token %}
           <div class="mb-3">
             <label class="form-label">Change Status</label>
             <select name="status" class="form-select mb-3">

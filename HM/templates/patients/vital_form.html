@@ -15,7 +15,7 @@
       <div class="card-header"><h5 class="card-title"><i class="bi bi-activity me-2 text-danger"></i>Vital Signs</h5></div>
       <div class="card-body">
         <form method="POST">
-          {{ csrf_field(request) }}
+          {% csrf_token %}
           <div class="row g-3">
             <div class="col-md-4"><label class="form-label">Temperature (°C)</label>{{ form.temperature }}</div>
             <div class="col-md-4"><label class="form-label">Pulse Rate (bpm)</label>{{ form.pulse_rate }}</div>

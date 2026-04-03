@@ -88,7 +88,7 @@
         <div class="col-6">
           <div class="lab-stat">
             <div class="lab-stat-label">Ordered</div>
-            <div class="lab-stat-value">{{ order.ordered_date.strftime('%d %b') }}</div>
+            <div class="lab-stat-value">{{ order.ordered_date|date:"d b" }}</div>
           </div>
         </div>
         <div class="col-6">

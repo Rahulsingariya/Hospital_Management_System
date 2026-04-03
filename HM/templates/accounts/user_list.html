@@ -22,7 +22,7 @@
             <div class="d-flex align-items-center gap-2">
               <div class="avatar-circle avatar-circle-sm">{{ user.first_name[0] if user.first_name else user.username[0] }}</div>
               <div>
-                <div class="fw-semibold small">{{ user.get_full_name() or user.username }}</div>
+                <div class="fw-semibold small">{{ user.get_full_name or user.username }}</div>
                 <div class="text-muted x-small">@{{ user.username }}</div>
               </div>
             </div>
@@ -34,7 +34,7 @@
             {% if user.is_active %}<span class="badge bg-success-subtle text-success">Active</span>
             {% else %}<span class="badge bg-secondary-subtle text-secondary">Inactive</span>{% endif %}
           </td>
-          <td class="small text-muted">{{ user.date_joined.strftime('%d %b %Y') }}</td>
+          <td class="small text-muted">{{ user.date_joined|date:"d b Y" }}</td>
         </tr>
         {% else %}
         <tr><td colspan="6"><div class="empty-state"><i class="bi bi-people"></i><h5>No users found</h5></div></td></tr>

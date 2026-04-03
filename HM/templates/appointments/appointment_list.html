@@ -100,7 +100,7 @@
         </div>
         <span class="badge {% if appt.status == 'scheduled' %}bg-info-subtle text-info{% elif appt.status == 'confirmed' %}bg-success-subtle text-success{% elif appt.status == 'in_progress' %}bg-warning-subtle text-warning{% elif appt.status == 'completed' %}bg-primary-subtle text-primary{% else %}bg-danger-subtle text-danger{% endif %}" style="font-size: 11px; padding: 6px 10px; white-space: nowrap;">
           <span style="display: inline-block; width: 6px; height: 6px; border-radius: 50%; background-color: currentColor; margin-right: 4px; vertical-align: middle;"></span>
-          {{ appt.get_status_display() }}
+          {{ appt.get_status_display }}
         </span>
       </div>
 
@@ -130,13 +130,13 @@
         <div class="col-6">
           <div class="appt-stat-mini">
             <div class="appt-stat-label">Date</div>
-            <div class="appt-stat-value">{{ appt.appointment_date.strftime('%d %b') }}</div>
+            <div class="appt-stat-value">{{ appt.appointment_date|date:"d b" }}</div>
           </div>
         </div>
         <div class="col-6">
           <div class="appt-stat-mini">
             <div class="appt-stat-label">Time</div>
-            <div class="appt-stat-value">{{ appt.appointment_time.strftime('%I:%M') }}</div>
+            <div class="appt-stat-value">{{ appt.appointment_time|time:"H:i" }}</div>
           </div>
         </div>
       </div>

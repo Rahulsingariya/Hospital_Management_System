@@ -22,8 +22,8 @@
         <div class="info-grid">
           <div class="info-item"><div class="info-label">Patient</div><div class="info-value">{{ order.patient.full_name }}</div></div>
           <div class="info-item"><div class="info-label">Doctor</div><div class="info-value">{{ order.doctor.full_name if order.doctor else '—' }}</div></div>
-          <div class="info-item"><div class="info-label">Date</div><div class="info-value">{{ order.ordered_date.strftime('%d %b %Y %H:%M') }}</div></div>
-          {% if order.processed_by %}<div class="info-item"><div class="info-label">Processed By</div><div class="info-value">{{ order.processed_by.get_full_name() }}</div></div>{% endif %}
+          <div class="info-item"><div class="info-label">Date</div><div class="info-value">{{ order.ordered_date|date:"d b Y H:i" }}</div></div>
+          {% if order.processed_by %}<div class="info-item"><div class="info-label">Processed By</div><div class="info-value">{{ order.processed_by.get_full_name }}</div></div>{% endif %}
         </div>
         {% if order.notes %}<div class="mt-3"><div class="info-label">Notes</div><div class="info-value">{{ order.notes }}</div></div>{% endif %}
       </div>
@@ -55,7 +55,7 @@
       <div class="card-header"><h5 class="card-title"><i class="bi bi-arrow-repeat me-2 text-warning"></i>Update Status</h5></div>
       <div class="card-body">
         <form method="POST" action="{{ url('lab:update_status', pk=order.pk) }}">
-          {{ csrf_field(request) }}
+          {% csrf_token %}
           <label class="form-label">Change Status</label>
           <select name="status" class="form-select mb-3">
             <option value="ordered" {{ 'selected' if order.status == 'ordered' }}>Ordered</option>

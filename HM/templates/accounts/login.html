@@ -49,7 +49,7 @@
         <p>Sign in to your MediCare account</p>
       </div>
 
-      {% for message in get_messages(request) %}
+      {% for message in messages %}
       <div class="alert alert-{{ 'danger' if message.tags == 'error' else message.tags }} alert-dismissible fade show mb-3">
         {{ message }}
         <button type="button" class="btn-close" data-bs-dismiss="alert"></button>
@@ -57,7 +57,7 @@
       {% endfor %}
 
       <form method="POST" action="{% url 'accounts:login' %}">
-        {{ csrf_field(request) }}
+        {% csrf_token %}
         <div class="mb-3">
           <label class="form-label">Username</label>
           <div class="input-group">

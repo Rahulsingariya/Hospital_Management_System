@@ -45,7 +45,7 @@
           </div>
           <div style="padding: 12px; background: #f9fafb; border-radius: 8px; border: 1px solid #e5e7eb;">
             <p style="margin: 0; font-size: 10px; font-weight: 600; color: #6b7280; text-transform: uppercase; letter-spacing: 0.5px;">DOB</p>
-            <p style="margin: 4px 0 0; font-size: 13px; font-weight: 700; color: #1f2937;">{{ patient.date_of_birth.strftime('%d %b') }}</p>
+            <p style="margin: 4px 0 0; font-size: 13px; font-weight: 700; color: #1f2937;">{{ patient.date_of_birth|date:"d b" }}</p>
           </div>
         </div>
         <div style="padding: 12px; background: #f0f9ff; border-radius: 8px; border-left: 3px solid #2563eb; margin-bottom: 20px;">
@@ -130,12 +130,12 @@
           {% for record in records %}
           <div style="padding: 14px; border: 1px solid #e5e7eb; border-radius: 8px; border-left: 3px solid #2563eb; background-color: #f9fafb; transition: all 0.3s ease;" onmouseover="this.style.boxShadow='0 4px 12px rgba(37, 99, 235, 0.1)'" onmouseout="this.style.boxShadow='none'">
             <div style="display: flex; justify-content: space-between; margin-bottom: 8px;">
-              <span style="font-weight: 600; color: #2563eb; font-size: 13px;">{{ record.visit_date.strftime('%d %b %Y') }}</span>
+              <span style="font-weight: 600; color: #2563eb; font-size: 13px;">{{ record.visit_date|date:"d b Y" }}</span>
               {% if record.doctor %}<span style="color: #6b7280; font-size: 12px;">Dr. {{ record.doctor.name or record.doctor.full_name }}</span>{% endif %}
             </div>
             <p style="margin: 6px 0 0; color: #1f2937; font-size: 13px;">💭 <strong>Complaint:</strong> {{ record.chief_complaint }}</p>
             <p style="margin: 4px 0 0; color: #6b7280; font-size: 12px;">📋 <strong>Diagnosis:</strong> {{ record.diagnosis }}</p>
-            {% if record.follow_up_date %}<div style="margin-top: 6px; padding: 6px; background: #fef3c7; border-radius: 4px; font-size: 11px; color: #92400e;"><i class="bi bi-calendar-check"></i> Follow-up: {{ record.follow_up_date.strftime('%d %b %Y') }}</div>{% endif %}
+            {% if record.follow_up_date %}<div style="margin-top: 6px; padding: 6px; background: #fef3c7; border-radius: 4px; font-size: 11px; color: #92400e;"><i class="bi bi-calendar-check"></i> Follow-up: {{ record.follow_up_date|date:"d b Y" }}</div>{% endif %}
           </div>
           {% endfor %}
         </div>
@@ -167,7 +167,7 @@
             <tbody>
               {% for v in vitals %}
               <tr style="border-bottom: 1px solid #e5e7eb;">
-                <td style="padding: 12px; font-size: 12px;">{{ v.recorded_at.strftime('%d %b %H:%M') }}</td>
+                <td style="padding: 12px; font-size: 12px;">{{ v.recorded_at|date:"d b H:i" }}</td>
                 <td style="padding: 12px; font-size: 12px;">{% if v.temperature %}<span class="badge bg-warning-subtle text-warning" style="font-size: 10px;">{{ v.temperature }}°C</span>{% else %}—{% endif %}</td>
                 <td style="padding: 12px; font-size: 12px; font-weight: 600;">{% if v.blood_pressure_systolic %}{{ v.blood_pressure_systolic }}/{{ v.blood_pressure_diastolic }}{% else %}—{% endif %}</td>
                 <td style="padding: 12px; font-size: 12px;">{{ v.pulse_rate or '—' }}</td>
@@ -199,7 +199,7 @@
               {% for appt in appointments %}
               <tr style="border-bottom: 1px solid #e5e7eb;">
                 <td style="padding: 12px; font-size: 12px;"><code style="background: #f3f4f6; padding: 2px 6px; border-radius: 4px;">{{ appt.appointment_id }}</code></td>
-                <td style="padding: 12px; font-size: 12px;">{{ appt.appointment_date.strftime('%d %b %Y') }} {{ appt.appointment_time.strftime('%H:%M') }}</td>
+                <td style="padding: 12px; font-size: 12px;">{{ appt.appointment_date|date:"d b Y" }} {{ appt.appointment_time|time:"H:i" }}</td>
                 <td style="padding: 12px; font-size: 12px;">{{ appt.doctor.name or appt.doctor.full_name }}</td>
                 <td style="padding: 12px;"><span class="badge type-badge-{{ appt.appointment_type }}" style="font-size: 10px;">{{ appt.get_appointment_type_display() }}</span></td>
                 <td style="padding: 12px;"><span class="status-dot status-{{ appt.status }}" style="font-size: 10px;">{{ appt.get_status_display() }}</span></td>
@@ -229,8 +229,8 @@
               {% for inv in invoices %}
               <tr style="border-bottom: 1px solid #e5e7eb;">
                 <td style="padding: 12px; font-size: 12px;"><code style="background: #f3f4f6; padding: 2px 6px; border-radius: 4px;">{{ inv.invoice_number }}</code></td>
-                <td style="padding: 12px; font-size: 12px;">{{ inv.issue_date.strftime('%d %b %Y') }}</td>
-                <td style="padding: 12px; font-weight: 700; color: #2563eb;">₹{{ "{:.2f}".format(inv.total) }}</td>
+                <td style="padding: 12px; font-size: 12px;">{{ inv.issue_date|date:"d b Y" }}</td>
+                <td style="padding: 12px; font-weight: 700; color: #2563eb;">₹{{ inv.total|floatformat:"2" }}</td>
                 <td style="padding: 12px;"><span class="badge {% if inv.status == 'paid' %}bg-success-subtle text-success{% elif inv.status in ['sent','partial'] %}bg-warning-subtle text-warning{% else %}bg-secondary-subtle text-secondary{% endif %}" style="font-size: 10px;">{{ inv.get_status_display() }}</span></td>
                 <td style="padding: 12px; text-align: center;"><a href="{% url 'billing:detail' inv.pk %}" class="btn btn-outline-primary btn-sm"><i class="bi bi-eye"></i></a></td>
               </tr>
