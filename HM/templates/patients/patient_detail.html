@@ -172,7 +172,7 @@
                 <td style="padding: 12px; font-size: 12px; font-weight: 600;">{% if v.blood_pressure_systolic %}{{ v.blood_pressure_systolic }}/{{ v.blood_pressure_diastolic }}{% else %}—{% endif %}</td>
                 <td style="padding: 12px; font-size: 12px;">{{ v.pulse_rate|default:"—" }}</td>
                 <td style="padding: 12px; font-size: 12px; font-weight: 600;">{{ v.oxygen_saturation|default:"—" }}{% if v.oxygen_saturation %}%{% endif %}</td>
-                <td style="padding: 12px; font-size: 12px;">{{ v.weight or '—' }}{% if v.weight %} kg{% endif %}</td>
+                <td style="padding: 12px; font-size: 12px;">{{ v.weight|default:"—" }}{% if v.weight %} kg{% endif %}</td>
               </tr>
               {% else %}
               <tr><td colspan="6" style="padding: 40px 20px; text-align: center; color: #9ca3af;"><p style="margin: 0;">No vitals recorded</p></td></tr>
@@ -200,7 +200,7 @@
               <tr style="border-bottom: 1px solid #e5e7eb;">
                 <td style="padding: 12px; font-size: 12px;"><code style="background: #f3f4f6; padding: 2px 6px; border-radius: 4px;">{{ appt.appointment_id }}</code></td>
                 <td style="padding: 12px; font-size: 12px;">{{ appt.appointment_date|date:"d b Y" }} {{ appt.appointment_time|time:"H:i" }}</td>
-                <td style="padding: 12px; font-size: 12px;">{{ appt.doctor.name or appt.doctor.full_name }}</td>
+                <td style="padding: 12px; font-size: 12px;">{% if appt.doctor.name %}{{ appt.doctor.name }}{% else %}{{ appt.doctor.full_name }}{% endif %}</td>
                 <td style="padding: 12px;"><span class="badge type-badge-{{ appt.appointment_type }}" style="font-size: 10px;">{{ appt.get_appointment_type_display() }}</span></td>
                 <td style="padding: 12px;"><span class="status-dot status-{{ appt.status }}" style="font-size: 10px;">{{ appt.get_status_display() }}</span></td>
               </tr>
