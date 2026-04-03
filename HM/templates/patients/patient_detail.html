@@ -204,7 +204,7 @@
                 <td style="padding: 12px;"><span class="badge type-badge-{{ appt.appointment_type }}" style="font-size: 10px;">{{ appt.get_appointment_type_display }}</span></td>
                 <td style="padding: 12px;"><span class="status-dot status-{{ appt.status }}" style="font-size: 10px;">{{ appt.get_status_display }}</span></td>
               </tr>
-              {% else %}
+              {% empty %}
               <tr><td colspan="5" style="padding: 40px 20px; text-align: center; color: #9ca3af;"><p style="margin: 0;">No appointments</p></td></tr>
               {% endfor %}
             </tbody>

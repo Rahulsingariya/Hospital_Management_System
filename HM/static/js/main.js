@@ -1,6 +1,4 @@
-// MediCare HMS - Main JavaScript - Professional Edition
 
-// ==================== SIDEBAR MANAGEMENT ====================
 const sidebarToggle = document.getElementById('sidebarToggle');
 const sidebar = document.getElementById('sidebar');
 const mainContent = document.getElementById('main-content');

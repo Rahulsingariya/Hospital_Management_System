@@ -36,7 +36,7 @@
           </td>
           <td class="small text-muted">{{ user.date_joined|date:"d b Y" }}</td>
         </tr>
-        {% else %}
+        {% empty %}
         <tr><td colspan="6"><div class="empty-state"><i class="bi bi-people"></i><h5>No users found</h5></div></td></tr>
         {% endfor %}
       </tbody>
