@@ -382,8 +382,8 @@
 // Data safety: We parse the Jinja variables into local JS constants first.
 // This prevents the IDE from getting confused by Jinja syntax within complex objects.
 
-const REVENUE_RAW = {{ revenue_data | tojson | safe }};
-const STATUS_RAW = {{ status_summary | tojson | safe }};
+const REVENUE_RAW = {{ revenue_data_json | safe }};
+const STATUS_RAW = {{ status_summary_json | safe }};
 
 // Revenue Chart
 const revenueCtx = document.getElementById('revenueChart')?.getContext('2d');

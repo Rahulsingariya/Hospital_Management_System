@@ -3,11 +3,13 @@ from django.contrib.auth.decorators import login_required
 from django.utils import timezone
 from django.db.models import Count, Sum, Q
 from django.http import JsonResponse
+from django.core.serializers.json import DjangoJSONEncoder
 from apps.patients.models import Patient
 from apps.doctors.models import Doctor
 from apps.appointments.models import Appointment
 from apps.billing.models import Invoice
 from apps.pharmacy.models import Medicine
+import json
 
 
 @login_required
@@ -64,6 +66,10 @@ def index(request):
         status__in=['sent', 'partial']
     ).select_related('patient').order_by('-created_at')[:5]
 
+    # Convert to JSON for template
+    revenue_data_json = json.dumps(revenue_data, cls=DjangoJSONEncoder)
+    status_summary_json = json.dumps(list(status_summary), cls=DjangoJSONEncoder)
+
     return render(request, 'dashboard/index.html', {
         'total_patients': total_patients,
         'total_doctors': total_doctors,
@@ -74,6 +80,8 @@ def index(request):
         'low_stock': low_stock,
         'status_summary': list(status_summary),
         'revenue_data': revenue_data,
+        'status_summary_json': status_summary_json,
+        'revenue_data_json': revenue_data_json,
         'pending_invoices': pending_invoices,
     })
 
