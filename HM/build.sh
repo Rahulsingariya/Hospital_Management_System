@@ -1,7 +1,12 @@
 #!/usr/bin/env bash
+# Exit immediately if a command exits with a non-zero status
+set -o errexit
 
-set -o errexit  # Exit on error
-
+# Install dependencies
 pip install -r requirements.txt
+
+# Collect static files (WhiteNoise)
 python manage.py collectstatic --noinput
-python manage.py migrate
+
+# Run database migrations
+python manage.py migrate --noinput
