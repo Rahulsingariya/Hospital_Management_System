@@ -15,3 +15,6 @@ pip install -r requirements.txt
 # Collect static and migrate
 python manage.py collectstatic --noinput
 python manage.py migrate --noinput
+
+# Create default superuser
+python manage.py create_default_superuser
