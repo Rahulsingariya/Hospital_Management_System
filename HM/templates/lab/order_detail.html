@@ -41,7 +41,7 @@
               <td class="fw-semibold small">{{ result.test.name }}</td>
               <td class="small">{{ result.result_value }} {{ result.test.unit }}</td>
               <td>{% if result.is_normal %}<span class="badge bg-success-subtle text-success">Normal</span>{% else %}<span class="badge bg-danger-subtle text-danger">Abnormal</span>{% endif %}</td>
-              <td class="small text-muted">{{ result.remarks or '—' }}</td>
+              <td class="small text-muted">{{ result.remarks|default:"—" }}</td>
             </tr>
             {% endfor %}
           </tbody>

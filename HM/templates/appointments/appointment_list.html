@@ -120,7 +120,7 @@
         <div class="d-flex align-items-center gap-2">
           <div class="avatar-circle-appt" style="background: linear-gradient(135deg, #ec4899, #f472b6);">{{ appt.doctor.name[0] if appt.doctor.name else appt.doctor.first_name[0] }}</div>
           <div style="flex: 1;">
-            <p style="margin: 0; font-weight: 700; font-size: 14px; color: #1f2937;">{{ appt.doctor.name or appt.doctor.full_name }}</p>
+            <p style="margin: 0; font-weight: 700; font-size: 14px; color: #1f2937;">{% if appt.doctor.name %}{{ appt.doctor.name }}{% else %}{{ appt.doctor.full_name }}{% endif %}</p>
             <p style="margin: 2px 0 0; font-size: 11px; color: #6b7280;">{{ appt.doctor.department.name if appt.doctor.department else '—' }}</p>
           </div>
         </div>

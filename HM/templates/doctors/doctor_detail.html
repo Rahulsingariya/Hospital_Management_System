@@ -44,7 +44,7 @@
           </div>
           <div class="col-auto">
             <small class="text-muted">Qualification:</small><br>
-            <strong>{{ doctor.qualification or '—' }}</strong>
+            <strong>{{ doctor.qualification|default:"—" }}</strong>
           </div>
           <div class="col-auto">
             <small class="text-muted">Experience:</small><br>
@@ -124,12 +124,12 @@
           <div class="info-item">
             <div class="info-label">Email</div>
             <div class="info-value small">
-              <a href="mailto:{{ doctor.user.email }}">{{ doctor.user.email or '—' }}</a>
+              <a href="mailto:{{ doctor.user.email }}">{{ doctor.user.email|default:"—" }}</a>
             </div>
           </div>
           <div class="info-item">
             <div class="info-label">Phone</div>
-            <div class="info-value">{{ doctor.user.phone or '—' }}</div>
+            <div class="info-value">{{ doctor.user.phone|default:"—" }}</div>
           </div>
           <div class="info-item">
             <div class="info-label">Account Status</div>

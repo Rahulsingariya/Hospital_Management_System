@@ -16,16 +16,16 @@
       <div class="card-body">
         <div class="row g-3">
           <div class="col-12"><label class="form-label">Patient</label><p>{{ invoice.patient.full_name }}</p></div>
-          <div class="col-12"><label class="form-label">Appointment</label><p>{{ invoice.appointment or "N/A" }}</p></div>
+          <div class="col-12"><label class="form-label">Appointment</label><p>{{ invoice.appointment|default:"N/A" }}</p></div>
           <div class="col-md-6"><label class="form-label">Due Date</label><p>{{ invoice.due_date }}</p></div>
           <div class="col-md-6"><label class="form-label">Status</label><p><span class="badge bg-info">{{ invoice.get_status_display }}</span></p></div>
-          <div class="col-md-6"><label class="form-label">Payment Method</label><p>{{ invoice.payment_method or "N/A" }}</p></div>
+          <div class="col-md-6"><label class="form-label">Payment Method</label><p>{{ invoice.payment_method|default:"N/A" }}</p></div>
           <div class="col-md-3"><label class="form-label">Subtotal</label><p>₹{{ invoice.subtotal }}</p></div>
           <div class="col-md-3"><label class="form-label">Discount</label><p>₹{{ invoice.discount }}</p></div>
           <div class="col-md-3"><label class="form-label">Tax</label><p>₹{{ invoice.tax }}</p></div>
           <div class="col-md-3"><label class="form-label">Total</label><p><strong>₹{{ invoice.total }}</strong></p></div>
           <div class="col-md-6"><label class="form-label">Amount Paid</label><p>₹{{ invoice.amount_paid }}</p></div>
-          <div class="col-12"><label class="form-label">Notes</label><p>{{ invoice.notes or "No notes" }}</p></div>
+          <div class="col-12"><label class="form-label">Notes</label><p>{{ invoice.notes|default:"No notes" }}</p></div>
           <div class="col-12 d-flex gap-2">
             <a href="{% url 'billing:list' %}" class="btn btn-outline-secondary">Back to List</a>
           </div>

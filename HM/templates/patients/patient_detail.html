@@ -54,7 +54,7 @@
         </div>
         <div style="padding: 12px; background: #f0f9ff; border-radius: 8px; border-left: 3px solid #2563eb;">
           <p style="margin: 0; font-size: 10px; font-weight: 600; color: #0369a1; text-transform: uppercase; letter-spacing: 0.5px;">Email</p>
-          <p style="margin: 4px 0 0; font-size: 13px; font-weight: 600; color: #1f2937;">{{ patient.email or '—' }}</p>
+          <p style="margin: 4px 0 0; font-size: 13px; font-weight: 600; color: #1f2937;">{{ patient.email|default:"—" }}</p>
         </div>
       </div>
     </div>
@@ -71,7 +71,7 @@
         </div>
         <div>
           <p style="margin: 0; font-size: 10px; font-weight: 600; color: #6b7280; text-transform: uppercase;">Phone</p>
-          <p style="margin: 4px 0 0; font-size: 14px; font-weight: 700; color: #1f2937;">{{ patient.emergency_contact_phone or '—' }}</p>
+          <p style="margin: 4px 0 0; font-size: 14px; font-weight: 700; color: #1f2937;">{{ patient.emergency_contact_phone|default:"—" }}</p>
         </div>
       </div>
     </div>
@@ -131,7 +131,7 @@
           <div style="padding: 14px; border: 1px solid #e5e7eb; border-radius: 8px; border-left: 3px solid #2563eb; background-color: #f9fafb; transition: all 0.3s ease;" onmouseover="this.style.boxShadow='0 4px 12px rgba(37, 99, 235, 0.1)'" onmouseout="this.style.boxShadow='none'">
             <div style="display: flex; justify-content: space-between; margin-bottom: 8px;">
               <span style="font-weight: 600; color: #2563eb; font-size: 13px;">{{ record.visit_date|date:"d b Y" }}</span>
-              {% if record.doctor %}<span style="color: #6b7280; font-size: 12px;">Dr. {{ record.doctor.name or record.doctor.full_name }}</span>{% endif %}
+              {% if record.doctor %}<span style="color: #6b7280; font-size: 12px;">Dr. {% if record.doctor.name %}{{ record.doctor.name }}{% else %}{{ record.doctor.full_name }}{% endif %}</span>{% endif %}
             </div>
             <p style="margin: 6px 0 0; color: #1f2937; font-size: 13px;">💭 <strong>Complaint:</strong> {{ record.chief_complaint }}</p>
             <p style="margin: 4px 0 0; color: #6b7280; font-size: 12px;">📋 <strong>Diagnosis:</strong> {{ record.diagnosis }}</p>
@@ -170,8 +170,8 @@
                 <td style="padding: 12px; font-size: 12px;">{{ v.recorded_at|date:"d b H:i" }}</td>
                 <td style="padding: 12px; font-size: 12px;">{% if v.temperature %}<span class="badge bg-warning-subtle text-warning" style="font-size: 10px;">{{ v.temperature }}°C</span>{% else %}—{% endif %}</td>
                 <td style="padding: 12px; font-size: 12px; font-weight: 600;">{% if v.blood_pressure_systolic %}{{ v.blood_pressure_systolic }}/{{ v.blood_pressure_diastolic }}{% else %}—{% endif %}</td>
-                <td style="padding: 12px; font-size: 12px;">{{ v.pulse_rate or '—' }}</td>
-                <td style="padding: 12px; font-size: 12px; font-weight: 600;">{{ v.oxygen_saturation or '—' }}{% if v.oxygen_saturation %}%{% endif %}</td>
+                <td style="padding: 12px; font-size: 12px;">{{ v.pulse_rate|default:"—" }}</td>
+                <td style="padding: 12px; font-size: 12px; font-weight: 600;">{{ v.oxygen_saturation|default:"—" }}{% if v.oxygen_saturation %}%{% endif %}</td>
                 <td style="padding: 12px; font-size: 12px;">{{ v.weight or '—' }}{% if v.weight %} kg{% endif %}</td>
               </tr>
               {% else %}

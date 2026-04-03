@@ -80,7 +80,7 @@
       {% if order.doctor %}
       <div class="mb-4" style="padding: 12px; background-color: #f9fafb; border-radius: 8px; border-left: 3px solid #2563eb;">
         <p style="margin: 0; font-size: 10px; font-weight: 600; color: #6b7280; text-transform: uppercase; letter-spacing: 0.5px;">Doctor</p>
-        <p style="margin: 4px 0 0; font-weight: 600; color: #1f2937; font-size: 13px;">{{ order.doctor.name or order.doctor.full_name }}</p>
+        <p style="margin: 4px 0 0; font-weight: 600; color: #1f2937; font-size: 13px;">{% if order.doctor.name %}{{ order.doctor.name }}{% else %}{{ order.doctor.full_name }}{% endif %}</p>
       </div>
       {% endif %}
 

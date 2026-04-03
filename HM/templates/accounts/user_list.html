@@ -22,14 +22,14 @@
             <div class="d-flex align-items-center gap-2">
               <div class="avatar-circle avatar-circle-sm">{{ user.first_name[0] if user.first_name else user.username[0] }}</div>
               <div>
-                <div class="fw-semibold small">{{ user.get_full_name or user.username }}</div>
+                <div class="fw-semibold small">{% if user.get_full_name %}{{ user.get_full_name }}{% else %}{{ user.username }}{% endif %}</div>
                 <div class="text-muted x-small">@{{ user.username }}</div>
               </div>
             </div>
           </td>
           <td><span class="badge bg-primary-subtle text-primary">{{ user.get_role_display() }}</span></td>
-          <td class="small">{{ user.email or '—' }}</td>
-          <td class="small">{{ user.phone or '—' }}</td>
+          <td class="small">{{ user.email|default:"—" }}</td>
+          <td class="small">{{ user.phone|default:"—" }}</td>
           <td>
             {% if user.is_active %}<span class="badge bg-success-subtle text-success">Active</span>
             {% else %}<span class="badge bg-secondary-subtle text-secondary">Inactive</span>{% endif %}

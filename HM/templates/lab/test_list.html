@@ -88,14 +88,14 @@
         <div class="col-6">
           <div class="test-stat">
             <div class="test-stat-label">Unit</div>
-            <div class="test-stat-value">{{ test.unit or '—' }}</div>
+            <div class="test-stat-value">{{ test.unit|default:"—" }}</div>
           </div>
         </div>
       </div>
 
       <div style="padding: 12px; background-color: #f0f9ff; border-radius: 8px; border-left: 3px solid #0ea5e9;">
         <p style="margin: 0; font-size: 10px; font-weight: 600; color: #0369a1; text-transform: uppercase; letter-spacing: 0.5px;">Normal Range</p>
-        <p style="margin: 4px 0 0; font-size: 13px; color: #0c4a6e; font-weight: 600;">{{ test.normal_range or '—' }} {{ test.unit or '' }}</p>
+        <p style="margin: 4px 0 0; font-size: 13px; color: #0c4a6e; font-weight: 600;">{{ test.normal_range|default:"—" }} {{ test.unit }}</p>
       </div>
     </div>
   </div>
