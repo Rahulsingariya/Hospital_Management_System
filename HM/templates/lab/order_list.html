@@ -65,7 +65,7 @@
         </div>
         <span class="badge {% if order.status == 'completed' %}bg-success-subtle text-success{% elif order.status == 'cancelled' %}bg-danger-subtle text-danger{% elif order.status == 'processing' %}bg-warning-subtle text-warning{% else %}bg-info-subtle text-info{% endif %}" style="font-size: 11px; padding: 6px 10px; white-space: nowrap;">
           <span style="display: inline-block; width: 6px; height: 6px; border-radius: 50%; background-color: currentColor; margin-right: 4px; vertical-align: middle;"></span>
-          {{ order.get_status_display() }}
+          {{ order.get_status_display }}
         </span>
       </div>
 
@@ -94,7 +94,7 @@
         <div class="col-6">
           <div class="lab-stat">
             <div class="lab-stat-label">Tests</div>
-            <div class="lab-stat-value">{{ order.tests.count() }}</div>
+            <div class="lab-stat-value">{{ order.tests.count }}</div>
           </div>
         </div>
       </div>

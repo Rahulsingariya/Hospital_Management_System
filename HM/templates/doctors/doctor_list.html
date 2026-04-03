@@ -57,7 +57,7 @@
             <code class="text-muted" style="font-size: 11px;">{{ doctor.doctor_id }}</code>
           </div>
           <span class="badge {% if doctor.availability == 'available' %}bg-success{% elif doctor.availability == 'busy' %}bg-warning{% else %}bg-secondary{% endif %}" style="white-space: nowrap;">
-            <i class="bi bi-circle-fill" style="font-size: 6px; margin-right: 4px;"></i>{{ doctor.get_availability_display() }}
+            <i class="bi bi-circle-fill" style="font-size: 6px; margin-right: 4px;"></i>{{ doctor.get_availability_display }}
           </span>
         </div>
         

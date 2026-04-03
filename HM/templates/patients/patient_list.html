@@ -108,7 +108,7 @@
 
       <span class="badge {% if patient.status == 'active' %}bg-success-subtle text-success{% elif patient.status == 'inactive' %}bg-secondary-subtle text-secondary{% else %}bg-warning-subtle text-warning{% endif %}" style="font-size: 11px; padding: 6px 10px;">
         <span style="display: inline-block; width: 6px; height: 6px; border-radius: 50%; background-color: currentColor; margin-right: 4px; vertical-align: middle;"></span>
-        {{ patient.get_status_display() }}
+        {{ patient.get_status_display }}
       </span>
 
       <div class="row g-2 mt-4 mb-4">
@@ -121,7 +121,7 @@
         <div class="col-6">
           <div class="stat-mini-patient">
             <div class="stat-mini-patient-label">Gender</div>
-            <div class="stat-mini-patient-value">{{ patient.get_gender_display() }}</div>
+            <div class="stat-mini-patient-value">{{ patient.get_gender_display }}</div>
           </div>
         </div>
         <div class="col-6">
@@ -148,19 +148,19 @@
   {% endfor %}
 </div>
 
-{% if patients.has_other_pages() %}
+{% if patients.has_other_pages %}
 <nav class="mt-4">
   <ul class="pagination pagination-sm mb-0 justify-content-center">
-    {% if patients.has_previous() %}
-    <li class="page-item"><a class="page-link" href="?page={{ patients.previous_page_number() }}&q={{ query }}&status={{ status }}"><i class="bi bi-chevron-left"></i></a></li>
+    {% if patients.has_previous %}
+    <li class="page-item"><a class="page-link" href="?page={{ patients.previous_page_number }}&q={{ query }}&status={{ status }}"><i class="bi bi-chevron-left"></i></a></li>
     {% endif %}
     {% for num in patients.paginator.page_range %}
     <li class="page-item {{ 'active' if patients.number == num }}">
       <a class="page-link" href="?page={{ num }}&q={{ query }}&status={{ status }}">{{ num }}</a>
     </li>
     {% endfor %}
-    {% if patients.has_next() %}
-    <li class="page-item"><a class="page-link" href="?page={{ patients.next_page_number() }}&q={{ query }}&status={{ status }}"><i class="bi bi-chevron-right"></i></a></li>
+    {% if patients.has_next %}
+    <li class="page-item"><a class="page-link" href="?page={{ patients.next_page_number }}&q={{ query }}&status={{ status }}"><i class="bi bi-chevron-right"></i></a></li>
     {% endif %}
   </ul>
 </nav>

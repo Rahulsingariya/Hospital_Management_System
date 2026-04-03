@@ -95,7 +95,7 @@
 
       <div class="d-flex align-items-start justify-content-between mb-3" style="border-bottom: 1px solid #f3f4f6; padding-bottom: 12px;">
         <div>
-          <p style="margin: 0; font-size: 11px; font-weight: 600; color: #6b7280; text-transform: uppercase; letter-spacing: 0.5px;">{{ appt.get_appointment_type_display() }}</p>
+          <p style="margin: 0; font-size: 11px; font-weight: 600; color: #6b7280; text-transform: uppercase; letter-spacing: 0.5px;">{{ appt.get_appointment_type_display }}</p>
           <p style="margin: 4px 0 0; font-size: 12px; color: #6b7280; font-weight: 500;">ID: <code style="background: #f3f4f6; padding: 2px 6px; border-radius: 4px;">{{ appt.appointment_id }}</code></p>
         </div>
         <span class="badge {% if appt.status == 'scheduled' %}bg-info-subtle text-info{% elif appt.status == 'confirmed' %}bg-success-subtle text-success{% elif appt.status == 'in_progress' %}bg-warning-subtle text-warning{% elif appt.status == 'completed' %}bg-primary-subtle text-primary{% else %}bg-danger-subtle text-danger{% endif %}" style="font-size: 11px; padding: 6px 10px; white-space: nowrap;">

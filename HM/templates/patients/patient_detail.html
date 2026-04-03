@@ -26,7 +26,7 @@
         <h3 style="margin: 0 0 8px; font-family: 'Poppins', sans-serif; font-weight: 700; font-size: 18px;">{{ patient.full_name }}</h3>
         <p style="margin: 0 0 12px; font-size: 12px; opacity: 0.9;">{{ patient.patient_id }}</p>
         <span class="badge {% if patient.status == 'active' %}bg-success-subtle text-success{% elif patient.status == 'inactive' %}bg-secondary-subtle text-secondary{% else %}bg-warning-subtle text-warning{% endif %}" style="font-size: 11px; padding: 6px 12px;">
-          {{ patient.get_status_display() }}
+          {{ patient.get_status_display }}
         </span>
       </div>
       <div style="padding: 20px;">
@@ -37,7 +37,7 @@
           </div>
           <div style="padding: 12px; background: #f9fafb; border-radius: 8px; border: 1px solid #e5e7eb;">
             <p style="margin: 0; font-size: 10px; font-weight: 600; color: #6b7280; text-transform: uppercase; letter-spacing: 0.5px;">Gender</p>
-            <p style="margin: 4px 0 0; font-size: 14px; font-weight: 700; color: #1f2937;">{{ patient.get_gender_display() }}</p>
+            <p style="margin: 4px 0 0; font-size: 14px; font-weight: 700; color: #1f2937;">{{ patient.get_gender_display }}</p>
           </div>
           <div style="padding: 12px; background: #f9fafb; border-radius: 8px; border: 1px solid #e5e7eb;">
             <p style="margin: 0; font-size: 10px; font-weight: 600; color: #6b7280; text-transform: uppercase; letter-spacing: 0.5px;">Blood</p>
@@ -201,8 +201,8 @@
                 <td style="padding: 12px; font-size: 12px;"><code style="background: #f3f4f6; padding: 2px 6px; border-radius: 4px;">{{ appt.appointment_id }}</code></td>
                 <td style="padding: 12px; font-size: 12px;">{{ appt.appointment_date|date:"d b Y" }} {{ appt.appointment_time|time:"H:i" }}</td>
                 <td style="padding: 12px; font-size: 12px;">{% if appt.doctor.name %}{{ appt.doctor.name }}{% else %}{{ appt.doctor.full_name }}{% endif %}</td>
-                <td style="padding: 12px;"><span class="badge type-badge-{{ appt.appointment_type }}" style="font-size: 10px;">{{ appt.get_appointment_type_display() }}</span></td>
-                <td style="padding: 12px;"><span class="status-dot status-{{ appt.status }}" style="font-size: 10px;">{{ appt.get_status_display() }}</span></td>
+                <td style="padding: 12px;"><span class="badge type-badge-{{ appt.appointment_type }}" style="font-size: 10px;">{{ appt.get_appointment_type_display }}</span></td>
+                <td style="padding: 12px;"><span class="status-dot status-{{ appt.status }}" style="font-size: 10px;">{{ appt.get_status_display }}</span></td>
               </tr>
               {% else %}
               <tr><td colspan="5" style="padding: 40px 20px; text-align: center; color: #9ca3af;"><p style="margin: 0;">No appointments</p></td></tr>
@@ -231,7 +231,7 @@
                 <td style="padding: 12px; font-size: 12px;"><code style="background: #f3f4f6; padding: 2px 6px; border-radius: 4px;">{{ inv.invoice_number }}</code></td>
                 <td style="padding: 12px; font-size: 12px;">{{ inv.issue_date|date:"d b Y" }}</td>
                 <td style="padding: 12px; font-weight: 700; color: #2563eb;">₹{{ inv.total|floatformat:"2" }}</td>
-                <td style="padding: 12px;"><span class="badge {% if inv.status == 'paid' %}bg-success-subtle text-success{% elif inv.status in ['sent','partial'] %}bg-warning-subtle text-warning{% else %}bg-secondary-subtle text-secondary{% endif %}" style="font-size: 10px;">{{ inv.get_status_display() }}</span></td>
+                <td style="padding: 12px;"><span class="badge {% if inv.status == 'paid' %}bg-success-subtle text-success{% elif inv.status in ['sent','partial'] %}bg-warning-subtle text-warning{% else %}bg-secondary-subtle text-secondary{% endif %}" style="font-size: 10px;">{{ inv.get_status_display }}</span></td>
                 <td style="padding: 12px; text-align: center;"><a href="{% url 'billing:detail' inv.pk %}" class="btn btn-outline-primary btn-sm"><i class="bi bi-eye"></i></a></td>
               </tr>
               {% else %}

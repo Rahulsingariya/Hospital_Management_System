@@ -22,7 +22,7 @@
           <div class="info-item"><div class="info-label">Doctor</div><div class="info-value">{{ appointment.doctor.full_name }}</div></div>
           <div class="info-item"><div class="info-label">Date</div><div class="info-value">{{ appointment.appointment_date|date:"d b Y" }}</div></div>
           <div class="info-item"><div class="info-label">Time</div><div class="info-value">{{ appointment.appointment_time|time:"h:i A" }}</div></div>
-          <div class="info-item"><div class="info-label">Type</div><div class="info-value"><span class="badge type-badge-{{ appointment.appointment_type }}">{{ appointment.get_appointment_type_display() }}</span></div></div>
+          <div class="info-item"><div class="info-label">Type</div><div class="info-value"><span class="badge type-badge-{{ appointment.appointment_type }}">{{ appointment.get_appointment_type_display }}</span></div></div>
           <div class="info-item"><div class="info-label">Status</div><div class="info-value"><span class="status-dot status-{{ appointment.status }}">{{ appointment.get_status_display }}</span></div></div>
         </div>
         {% if appointment.reason %}<div class="mt-3"><div class="info-label">Reason</div><div class="info-value">{{ appointment.reason }}</div></div>{% endif %}

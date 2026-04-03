@@ -15,7 +15,7 @@
       <div class="card-header">
         <h5 class="card-title"><i class="bi bi-eyedropper me-2 text-info"></i>Order Info</h5>
         <span class="badge {% if order.status == 'completed' %}bg-success-subtle text-success{% elif order.status == 'cancelled' %}bg-danger-subtle text-danger{% else %}bg-warning-subtle text-warning{% endif %} ms-auto">
-          {{ order.get_status_display() }}
+          {{ order.get_status_display }}
         </span>
       </div>
       <div class="card-body">
@@ -29,14 +29,14 @@
       </div>
     </div>
 
-    {% if order.results.all() %}
+    {% if order.results.all %}
     <div class="card">
       <div class="card-header"><h5 class="card-title">Test Results</h5></div>
       <div class="card-body p-0">
         <table class="table mb-0">
           <thead><tr><th>Test</th><th>Result</th><th>Normal</th><th>Remarks</th></tr></thead>
           <tbody>
-            {% for result in order.results.all() %}
+            {% for result in order.results.all %}
             <tr>
               <td class="fw-semibold small">{{ result.test.name }}</td>
               <td class="small">{{ result.result_value }} {{ result.test.unit }}</td>
