@@ -1,12 +1,17 @@
 #!/usr/bin/env bash
-# Exit immediately if a command exits with a non-zero status
 set -o errexit
 
-# Install dependencies
+# Install system dependencies for Pillow
+apt-get update && apt-get install -y \
+    libjpeg-dev zlib1g-dev libfreetype6-dev \
+    liblcms2-dev libwebp-dev tcl8.6-dev tk8.6-dev
+
+# Upgrade pip
+pip install --upgrade pip
+
+# Install requirements
 pip install -r requirements.txt
 
-# Collect static files (WhiteNoise)
+# Collect static and migrate
 python manage.py collectstatic --noinput
-
-# Run database migrations
 python manage.py migrate --noinput
