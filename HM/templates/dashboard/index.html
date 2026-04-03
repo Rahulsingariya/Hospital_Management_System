@@ -282,12 +282,12 @@
                   </span>
                 </td>
                 <td style="padding: 12px 16px;">
-                  <span class="badge type-badge-{{ appt.appointment_type|lower|default('general') }}" style="font-size: 11px;">
+                  <span class="badge type-badge-{{ appt.appointment_type|lower|default:"general" }}" style="font-size: 11px;">
                     {{ appt.get_appointment_type_display() }}
                   </span>
                 </td>
                 <td style="padding: 12px 16px;">
-                  <span class="status-dot status-{{ appt.status|lower|default('unknown') }}" style="font-size: 11px;">
+                  <span class="status-dot status-{{ appt.status|lower|default:"unknown" }}" style="font-size: 11px;">
                     {{ appt.get_status_display }}
                   </span>
                 </td>
