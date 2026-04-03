@@ -239,7 +239,7 @@
           <h5 class="card-title" style="margin: 0;">
             <i class="bi bi-calendar-day text-warning me-2"></i>Today's Appointments
           </h5>
-          <a href="{{ url('appointments:list') }}" class="btn btn-sm btn-outline-primary">View All</a>
+          <a href="{% url 'appointments:list' %}" class="btn btn-sm btn-outline-primary">View All</a>
         </div>
         <p style="margin: 8px 0 0; font-size: 12px; color: #6b7280;">Scheduled appointments for today</p>
       </div>
@@ -316,13 +316,13 @@
           <h5 class="card-title" style="margin: 0;">
             <i class="bi bi-person-plus text-info me-2"></i>Recent Patients
           </h5>
-          <a href="{{ url('patients:list') }}" class="btn btn-sm btn-outline-primary">View All</a>
+          <a href="{% url 'patients:list' %}" class="btn btn-sm btn-outline-primary">View All</a>
         </div>
         <p style="margin: 8px 0 0; font-size: 12px; color: #6b7280;">Recently registered patients</p>
       </div>
       <div class="card-body p-0">
         {% for patient in recent_patients %}
-        <a href="{{ url('patients:detail', patient.pk) }}" class="patient-item" 
+        <a href="{% url 'patients:detail' patient.pk %}" class="patient-item" 
            style="padding: 12px 16px; display: flex; align-items: center; gap: 12px; border-bottom: 1px solid #f3f4f6; text-decoration: none; color: inherit; transition: all 0.3s ease;">
           <div class="avatar-circle avatar-circle-sm 
                        {% if patient.gender == 'M' %}avatar-male{% else %}avatar-female{% endif %}" 

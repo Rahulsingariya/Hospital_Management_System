@@ -1,7 +1,7 @@
 {% extends "base.html" %}
 {% block title %}Lab Order{% endblock %}
 {% block breadcrumb %}
-<a href="{{ url('lab:orders') }}" class="breadcrumb-item">Laboratory</a>
+<a href="{% url 'lab:orders' %}" class="breadcrumb-item">Laboratory</a>
 <span class="breadcrumb-sep">/</span>
 <span class="breadcrumb-item active">Order Details</span>
 {% endblock %}
@@ -54,7 +54,7 @@
     <div class="card">
       <div class="card-header"><h5 class="card-title"><i class="bi bi-arrow-repeat me-2 text-warning"></i>Update Status</h5></div>
       <div class="card-body">
-        <form method="POST" action="{{ url('lab:update_status', pk=order.pk) }}">
+        <form method="POST" action="{% url 'lab:update_status' pk=order.pk %}">
           {% csrf_token %}
           <label class="form-label">Change Status</label>
           <select name="status" class="form-select mb-3">

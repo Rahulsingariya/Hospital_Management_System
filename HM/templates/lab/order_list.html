@@ -8,7 +8,7 @@
 <div class="page-header">
   <div><h1 class="page-title">Laboratory</h1><p class="page-subtitle">Lab orders and test results</p></div>
   <div class="page-actions">
-    <a href="{{ url('lab:tests') }}" class="btn btn-outline-secondary"><i class="bi bi-eyedropper me-1"></i>Test Catalogue</a>
+    <a href="{% url 'lab:tests' %}" class="btn btn-outline-secondary"><i class="bi bi-eyedropper me-1"></i>Test Catalogue</a>
   </div>
 </div>
 {% if orders %}
@@ -100,7 +100,7 @@
       </div>
 
       <div class="d-flex gap-2">
-        <a href="{{ url('lab:order_detail', order.pk) }}" class="btn btn-outline-primary btn-sm w-100" style="font-size: 12px;"><i class="bi bi-eye"></i> View Order</a>
+        <a href="{% url 'lab:order_detail' order.pk %}" class="btn btn-outline-primary btn-sm w-100" style="font-size: 12px;"><i class="bi bi-eye"></i> View Order</a>
       </div>
     </div>
   </div>

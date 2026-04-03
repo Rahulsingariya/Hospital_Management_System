@@ -165,7 +165,7 @@
   <i class="bi bi-receipt" style="font-size: 48px; color: #d1d5db; margin-bottom: 16px; display: block;"></i>
   <h5 style="font-family: 'Poppins', sans-serif; font-weight: 700; color: #1f2937; margin: 0 0 8px;">No invoices found</h5>
   <p style="color: #6b7280; margin: 0 0 20px; font-size: 14px;">Try adjusting your search or create a new invoice.</p>
-  <a href="{{ url('billing:create') }}" class="btn btn-primary"><i class="bi bi-plus-lg"></i> New Invoice</a>
+  <a href="{% url 'billing:create' %}" class="btn btn-primary"><i class="bi bi-plus-lg"></i> New Invoice</a>
 </div>
 {% endif %}
 {% endblock %}
