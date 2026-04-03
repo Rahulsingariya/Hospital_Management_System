@@ -1,7 +1,7 @@
 {% extends "base.html" %}
 {% block title %}Prescriptions{% endblock %}
 {% block breadcrumb %}
-<a href="{{ url('pharmacy:medicines') }}" class="breadcrumb-item">Pharmacy</a>
+<a href="{% url 'pharmacy:medicines' %}" class="breadcrumb-item">Pharmacy</a>
 <span class="breadcrumb-sep">/</span>
 <span class="breadcrumb-item active">Prescriptions</span>
 {% endblock %}
@@ -91,7 +91,7 @@
 
       <div class="mt-auto pt-2">
         {% if rx.status == 'pending' %}
-        <form method="POST" action="{{ url('pharmacy:dispense', pk=rx.pk) }}" style="width: 100%;">
+        <form method="POST" action="{% url 'pharmacy:dispense' rx.pk %}" style="width: 100%;">
           {{ csrf_field(request) }}
           <button type="submit" class="btn btn-success btn-sm w-100" style="font-size: 12px;"><i class="bi bi-check-lg"></i> Dispense Prescription</button>
         </form>

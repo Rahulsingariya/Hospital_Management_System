@@ -1,7 +1,7 @@
 {% extends "base.html" %}
 {% block title %}{{ title }}{% endblock %}
 {% block breadcrumb %}
-<a href="{{ url('appointments:list') }}" class="breadcrumb-item">Appointments</a>
+<a href="{% url 'appointments:list' %}" class="breadcrumb-item">Appointments</a>
 <span class="breadcrumb-sep">/</span>
 <span class="breadcrumb-item active">{{ title }}</span>
 {% endblock %}
@@ -27,7 +27,7 @@
             <div class="col-12"><label class="form-label">Notes</label>{{ form.notes }}</div>
             <div class="col-12 d-flex gap-2">
               <button type="submit" class="btn btn-primary"><i class="bi bi-check-lg me-2"></i>Book Appointment</button>
-              <a href="{{ url('appointments:list') }}" class="btn btn-outline-secondary">Cancel</a>
+              <a href="{% url 'appointments:list' %}" class="btn btn-outline-secondary">Cancel</a>
             </div>
           </div>
         </form>

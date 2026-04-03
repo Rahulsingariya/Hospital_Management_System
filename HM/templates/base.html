@@ -24,38 +24,38 @@
 
   <nav class="sidebar-nav">
     <div class="nav-section-label">Overview</div>
-    <a href="{{ url('dashboard:index') }}" class="nav-link {% if request.resolver_match.namespace == 'dashboard' %}active{% endif %}">
+    <a href="{% url 'dashboard:index' %}" class="nav-link {% if request.resolver_match.namespace == 'dashboard' %}active{% endif %}">
       <i class="bi bi-grid-fill"></i><span>Dashboard</span>
     </a>
 
     <div class="nav-section-label">Patient Care</div>
-    <a href="{{ url('patients:list') }}" class="nav-link {% if request.resolver_match.namespace == 'patients' %}active{% endif %}">
+    <a href="{% url 'patients:list' %}" class="nav-link {% if request.resolver_match.namespace == 'patients' %}active{% endif %}">
       <i class="bi bi-people-fill"></i><span>Patients</span>
     </a>
-    <a href="{{ url('appointments:list') }}" class="nav-link {% if request.resolver_match.namespace == 'appointments' %}active{% endif %}">
+    <a href="{% url 'appointments:list' %}" class="nav-link {% if request.resolver_match.namespace == 'appointments' %}active{% endif %}">
       <i class="bi bi-calendar-check-fill"></i><span>Appointments</span>
     </a>
-    <a href="{{ url('doctors:list') }}" class="nav-link {% if request.resolver_match.namespace == 'doctors' %}active{% endif %}">
+    <a href="{% url 'doctors:list' %}" class="nav-link {% if request.resolver_match.namespace == 'doctors' %}active{% endif %}">
       <i class="bi bi-person-badge-fill"></i><span>Doctors</span>
     </a>
-    <a href="{{ url('doctors:departments') }}" class="nav-link {% if request.resolver_match.namespace == 'doctors' and 'dept' in request.resolver_match.url_name %}active{% endif %}">
+    <a href="{% url 'doctors:departments' %}" class="nav-link {% if request.resolver_match.namespace == 'doctors' and 'dept' in request.resolver_match.url_name %}active{% endif %}">
       <i class="bi bi-building-fill-cross"></i><span>Departments</span>
     </a>
 
     <div class="nav-section-label">Operations</div>
-    <a href="{{ url('billing:list') }}" class="nav-link {% if request.resolver_match.namespace == 'billing' %}active{% endif %}">
+    <a href="{% url 'billing:list' %}" class="nav-link {% if request.resolver_match.namespace == 'billing' %}active{% endif %}">
       <i class="bi bi-receipt-cutoff"></i><span>Billing</span>
     </a>
-    <a href="{{ url('pharmacy:medicines') }}" class="nav-link {% if request.resolver_match.namespace == 'pharmacy' %}active{% endif %}">
+    <a href="{% url 'pharmacy:medicines' %}" class="nav-link {% if request.resolver_match.namespace == 'pharmacy' %}active{% endif %}">
       <i class="bi bi-capsule-pill"></i><span>Pharmacy</span>
     </a>
-    <a href="{{ url('lab:orders') }}" class="nav-link {% if request.resolver_match.namespace == 'lab' %}active{% endif %}">
+    <a href="{% url 'lab:orders' %}" class="nav-link {% if request.resolver_match.namespace == 'lab' %}active{% endif %}">
       <i class="bi bi-eyedropper"></i><span>Laboratory</span>
     </a>
 
     {% if request.user.is_admin %}
     <div class="nav-section-label">Administration</div>
-    <a href="{{ url('accounts:user_list') }}" class="nav-link {% if request.resolver_match.namespace == 'accounts' %}active{% endif %}">
+    <a href="{% url 'accounts:user_list' %}" class="nav-link {% if request.resolver_match.namespace == 'accounts' %}active{% endif %}">
       <i class="bi bi-shield-person-fill"></i><span>Users</span>
     </a>
     <a href="/admin/" class="nav-link">
@@ -74,7 +74,7 @@
       <span class="user-name">{{ request.user.get_full_name() or request.user.username }}</span>
       <span class="user-role">{{ request.user.get_role_display() }}</span>
     </div>
-    <a href="{{ url('accounts:logout') }}" class="btn-logout" title="Logout">
+    <a href="{% url 'accounts:logout' %}" class="btn-logout" title="Logout">
       <i class="bi bi-box-arrow-right"></i>
     </a>
   </div>
@@ -90,7 +90,7 @@
       <button class="action-btn" title="Search" data-bs-toggle="modal" data-bs-target="#searchModal">
         <i class="bi bi-search"></i>
       </button>
-      <a href="{{ url('patients:create') }}" class="btn btn-primary btn-sm">
+      <a href="{% url 'patients:create' %}" class="btn btn-primary btn-sm">
         <i class="bi bi-plus-lg"></i> New Patient
       </a>
     </div>

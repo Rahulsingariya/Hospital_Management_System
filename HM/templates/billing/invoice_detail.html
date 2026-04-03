@@ -1,7 +1,7 @@
 {% extends "base.html" %}
 {% block title %}Invoice Details{% endblock %}
 {% block breadcrumb %}
-<a href="{{ url('billing:list') }}" class="breadcrumb-item">Billing</a>
+<a href="{% url 'billing:list' %}" class="breadcrumb-item">Billing</a>
 <span class="breadcrumb-sep">/</span>
 <span class="breadcrumb-item active">Invoice Details</span>
 {% endblock %}
@@ -27,7 +27,7 @@
           <div class="col-md-6"><label class="form-label">Amount Paid</label><p>₹{{ invoice.amount_paid }}</p></div>
           <div class="col-12"><label class="form-label">Notes</label><p>{{ invoice.notes or "No notes" }}</p></div>
           <div class="col-12 d-flex gap-2">
-            <a href="{{ url('billing:list') }}" class="btn btn-outline-secondary">Back to List</a>
+            <a href="{% url 'billing:list' %}" class="btn btn-outline-secondary">Back to List</a>
           </div>
         </div>
       </div>

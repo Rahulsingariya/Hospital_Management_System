@@ -22,13 +22,13 @@
       </div>
     </div>
     <div class="d-flex gap-2" style="margin-top: 16px;">
-      <a href="{{ url('appointments:create') }}" class="btn btn-light btn-sm" style="color: #667eea;">
+      <a href="{% url 'appointments:create' %}" class="btn btn-light btn-sm" style="color: #667eea;">
         <i class="bi bi-calendar-plus me-1"></i>Book Appointment
       </a>
-      <a href="{{ url('patients:create') }}" class="btn btn-light btn-sm" style="color: #667eea;">
+      <a href="{% url 'patients:create' %}" class="btn btn-light btn-sm" style="color: #667eea;">
         <i class="bi bi-person-plus me-1"></i>Register Patient
       </a>
-      <a href="{{ url('billing:list') }}" class="btn btn-light btn-sm" style="color: #667eea;">
+      <a href="{% url 'billing:list' %}" class="btn btn-light btn-sm" style="color: #667eea;">
         <i class="bi bi-download me-1"></i>Reports
       </a>
     </div>

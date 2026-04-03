@@ -11,8 +11,8 @@
     <p class="page-subtitle">Manage doctors, specialists, and medical professionals</p>
   </div>
   <div class="page-actions">
-    <a href="{{ url('doctors:departments') }}" class="btn btn-outline-secondary"><i class="bi bi-building me-1"></i>Departments</a>
-    <a href="{{ url('doctors:create') }}" class="btn btn-primary"><i class="bi bi-plus-circle me-1"></i>Add Doctor</a>
+    <a href="{% url 'doctors:departments' %}" class="btn btn-outline-secondary"><i class="bi bi-building me-1"></i>Departments</a>
+    <a href="{% url 'doctors:create' %}" class="btn btn-primary"><i class="bi bi-plus-circle me-1"></i>Add Doctor</a>
   </div>
 </div>
 
@@ -90,8 +90,8 @@
       </div>
       <div class="card-footer" style="background: transparent; border-top: 1px solid var(--border); padding: 12px 16px;">
         <div class="d-flex gap-2">
-          <a href="{{ url('doctors:detail', doctor.pk) }}" class="btn btn-outline-primary btn-sm flex-grow-1"><i class="bi bi-eye me-1"></i>View Profile</a>
-          <a href="{{ url('doctors:edit', doctor.pk) }}" class="btn btn-outline-secondary btn-sm"><i class="bi bi-pencil"></i></a>
+          <a href="{% url 'doctors:detail' doctor.pk %}" class="btn btn-outline-primary btn-sm flex-grow-1"><i class="bi bi-eye me-1"></i>View Profile</a>
+          <a href="{% url 'doctors:edit' doctor.pk %}" class="btn btn-outline-secondary btn-sm"><i class="bi bi-pencil"></i></a>
         </div>
       </div>
     </div>
@@ -104,7 +104,7 @@
           <i class="bi bi-person-badge" style="font-size: 3rem; color: #d1d5db; margin-bottom: 16px; display: block;"></i>
           <h5 class="mb-2" style="color: #6b7280;">No doctors found</h5>
           <p class="text-muted mb-3">Start by adding doctors to your hospital system</p>
-          <a href="{{ url('doctors:create') }}" class="btn btn-primary"><i class="bi bi-plus-circle me-1"></i>Add First Doctor</a>
+          <a href="{% url 'doctors:create' %}" class="btn btn-primary"><i class="bi bi-plus-circle me-1"></i>Add First Doctor</a>
         </div>
       </div>
     </div>

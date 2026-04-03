@@ -1,7 +1,7 @@
 {% extends "base.html" %}
 {% block title %}{{ patient.full_name }}{% endblock %}
 {% block breadcrumb %}
-<a href="{{ url('patients:list') }}" class="breadcrumb-item">Patients</a>
+<a href="{% url 'patients:list' %}" class="breadcrumb-item">Patients</a>
 <span class="breadcrumb-sep">/</span>
 <span class="breadcrumb-item active">{{ patient.full_name }}</span>
 {% endblock %}
@@ -13,8 +13,8 @@
     <p class="page-subtitle">View and manage patient information</p>
   </div>
   <div class="page-actions">
-    <a href="{{ url('patients:edit', patient.pk) }}" class="btn btn-outline-secondary"><i class="bi bi-pencil me-1"></i>Edit</a>
-    <a href="{{ url('appointments:create') }}?patient={{ patient.pk }}" class="btn btn-primary"><i class="bi bi-calendar-plus me-1"></i>Book Appointment</a>
+    <a href="{% url 'patients:edit' patient.pk %}" class="btn btn-outline-secondary"><i class="bi bi-pencil me-1"></i>Edit</a>
+    <a href="{% url 'appointments:create' %}?patient={{ patient.pk }}" class="btn btn-primary"><i class="bi bi-calendar-plus me-1"></i>Book Appointment</a>
   </div>
 </div>
 
@@ -123,7 +123,7 @@
       <div id="tab-records" class="tab-pane active" style="padding: 20px;">
         <div style="display: flex; justify-content: space-between; align-items: center; margin-bottom: 16px;">
           <h5 style="margin: 0; font-family: 'Poppins', sans-serif; font-weight: 700; color: #1f2937;" class="card-title">Medical Records</h5>
-          <a href="{{ url('patients:add_record', patient_pk=patient.pk) }}" class="btn btn-sm btn-primary"><i class="bi bi-plus-lg"></i> Add Record</a>
+          <a href="{% url 'patients:add_record' patient.pk %}" class="btn btn-sm btn-primary"><i class="bi bi-plus-lg"></i> Add Record</a>
         </div>
         {% if records %}
         <div style="display: flex; flex-direction: column; gap: 12px;">
@@ -150,7 +150,7 @@
       <div id="tab-vitals" class="tab-pane" style="padding: 20px; display: none;">
         <div style="display: flex; justify-content: space-between; align-items: center; margin-bottom: 16px;">
           <h5 style="margin: 0; font-family: 'Poppins', sans-serif; font-weight: 700; color: #1f2937;" class="card-title">Vital Signs</h5>
-          <a href="{{ url('patients:add_vitals', patient_pk=patient.pk) }}" class="btn btn-sm btn-primary"><i class="bi bi-plus-lg"></i> Record Vitals</a>
+          <a href="{% url 'patients:add_vitals' patient.pk %}" class="btn btn-sm btn-primary"><i class="bi bi-plus-lg"></i> Record Vitals</a>
         </div>
         <div class="table-responsive">
           <table class="table table-sm" style="margin: 0;">
@@ -232,7 +232,7 @@
                 <td style="padding: 12px; font-size: 12px;">{{ inv.issue_date.strftime('%d %b %Y') }}</td>
                 <td style="padding: 12px; font-weight: 700; color: #2563eb;">₹{{ "{:.2f}".format(inv.total) }}</td>
                 <td style="padding: 12px;"><span class="badge {% if inv.status == 'paid' %}bg-success-subtle text-success{% elif inv.status in ['sent','partial'] %}bg-warning-subtle text-warning{% else %}bg-secondary-subtle text-secondary{% endif %}" style="font-size: 10px;">{{ inv.get_status_display() }}</span></td>
-                <td style="padding: 12px; text-align: center;"><a href="{{ url('billing:detail', inv.pk) }}" class="btn btn-outline-primary btn-sm"><i class="bi bi-eye"></i></a></td>
+                <td style="padding: 12px; text-align: center;"><a href="{% url 'billing:detail' inv.pk %}" class="btn btn-outline-primary btn-sm"><i class="bi bi-eye"></i></a></td>
               </tr>
               {% else %}
               <tr><td colspan="5" style="padding: 40px 20px; text-align: center; color: #9ca3af;"><p style="margin: 0;">No invoices</p></td></tr>

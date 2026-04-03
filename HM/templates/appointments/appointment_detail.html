@@ -1,7 +1,7 @@
 {% extends "base.html" %}
 {% block title %}Appointment {{ appointment.appointment_id }}{% endblock %}
 {% block breadcrumb %}
-<a href="{{ url('appointments:list') }}" class="breadcrumb-item">Appointments</a>
+<a href="{% url 'appointments:list' %}" class="breadcrumb-item">Appointments</a>
 <span class="breadcrumb-sep">/</span>
 <span class="breadcrumb-item active">{{ appointment.appointment_id }}</span>
 {% endblock %}
@@ -34,7 +34,7 @@
     <div class="card">
       <div class="card-header"><h5 class="card-title"><i class="bi bi-arrow-repeat me-2 text-warning"></i>Update Status</h5></div>
       <div class="card-body">
-        <form method="POST" action="{{ url('appointments:update_status', pk=appointment.pk) }}">
+        <form method="POST" action="{% url 'appointments:update_status' appointment.pk %}">
           {{ csrf_field(request) }}
           <div class="mb-3">
             <label class="form-label">Change Status</label>
@@ -49,7 +49,7 @@
             <button type="submit" class="btn btn-primary w-100"><i class="bi bi-check-lg me-2"></i>Update Status</button>
           </div>
         </form>
-        <a href="{{ url('patients:detail', pk=appointment.patient.pk) }}" class="btn btn-outline-secondary w-100">
+        <a href="{% url 'patients:detail' appointment.patient.pk %}" class="btn btn-outline-secondary w-100">
           <i class="bi bi-person me-2"></i>View Patient
         </a>
       </div>
