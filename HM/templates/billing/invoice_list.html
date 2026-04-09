@@ -45,11 +45,11 @@
       <div class="col-md-4">
         <select name="status" class="form-select">
           <option value="">All Statuses</option>
-          <option value="draft" {{ 'selected' if status == 'draft' }}>Draft</option>
-          <option value="sent" {{ 'selected' if status == 'sent' }}>Sent</option>
-          <option value="paid" {{ 'selected' if status == 'paid' }}>Paid</option>
-          <option value="partial" {{ 'selected' if status == 'partial' }}>Partial</option>
-          <option value="overdue" {{ 'selected' if status == 'overdue' }}>Overdue</option>
+          <option value="draft" {% if status == 'draft' %}selected{% endif %}>Draft</option>
+          <option value="sent" {% if status == 'sent' %}selected{% endif %}>Sent</option>
+          <option value="paid" {% if status == 'paid' %}selected{% endif %}>Paid</option>
+          <option value="partial" {% if status == 'partial' %}selected{% endif %}>Partial</option>
+          <option value="overdue" {% if status == 'overdue' %}selected{% endif %}>Overdue</option>
         </select>
       </div>
       <div class="col-md-2">
