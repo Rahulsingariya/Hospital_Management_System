@@ -114,7 +114,7 @@
         <div class="col-6">
           <div class="med-stat">
             <div class="med-stat-label">Expires</div>
-            <div class="med-stat-value">{{ med.expiry_date|date:"b Y" if med.expiry_date else '—' }}</div>
+            <div class="med-stat-value">{% if med.expiry_date %}{{ med.expiry_date|date:"b Y" }}{% else %}—{% endif %}</div>
           </div>
         </div>
       </div>
