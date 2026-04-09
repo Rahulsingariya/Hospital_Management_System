@@ -40,7 +40,7 @@
         <div class="row g-3 mt-2">
           <div class="col-auto">
             <small class="text-muted">Specialization:</small><br>
-            <strong>{{ doctor.specialization.name if doctor.specialization else '—' }}</strong>
+            <strong>{% if doctor.specialization %}{{ doctor.specialization.name }}{% else %}—{% endif %}</strong>
           </div>
           <div class="col-auto">
             <small class="text-muted">Qualification:</small><br>
@@ -80,11 +80,11 @@
           </div>
           <div class="info-item">
             <div class="info-label">Specialization</div>
-            <div class="info-value">{{ doctor.specialization.name if doctor.specialization else '—' }}</div>
+            <div class="info-value">{% if doctor.specialization %}{{ doctor.specialization.name }}{% else %}—{% endif %}</div>
           </div>
           <div class="info-item">
             <div class="info-label">Department</div>
-            <div class="info-value">{{ doctor.department.name if doctor.department else '—' }}</div>
+            <div class="info-value">{% if doctor.department %}{{ doctor.department.name }}{% else %}—{% endif %}</div>
           </div>
           <div class="info-item">
             <div class="info-label">Qualification</div>
@@ -100,7 +100,7 @@
           </div>
           <div class="info-item">
             <div class="info-label">Joining Date</div>
-            <div class="info-value">{{ doctor.joining_date|date:"d b Y" if doctor.joining_date else '—' }}</div>
+            <div class="info-value">{% if doctor.joining_date %}{{ doctor.joining_date|date:"d b Y" }}{% else %}—{% endif %}</div>
           </div>
           <div class="info-item">
             <div class="info-label">Availability</div>
@@ -135,7 +135,7 @@
             <div class="info-label">Account Status</div>
             <div class="info-value">
               <span class="badge {% if doctor.user.is_active %}bg-success{% else %}bg-danger{% endif %}">
-                {{ 'Active' if doctor.user.is_active else 'Inactive' }}
+                {% if doctor.user.is_active %}Active{% else %}Inactive{% endif %}
               </span>
             </div>
           </div>
@@ -183,7 +183,7 @@
                 <td>{{ s.max_appointments }}</td>
                 <td>
                   <span class="badge {% if s.is_active %}bg-success{% else %}bg-secondary{% endif %}">
-                    {{ 'Active' if s.is_active else 'Inactive' }}
+                    {% if s.is_active %}Active{% else %}Inactive{% endif %}
                   </span>
                 </td>
               </tr>
@@ -219,7 +219,7 @@
                 <td>
                   <div class="d-flex align-items-center gap-2">
                     <div class="avatar-circle avatar-circle-sm" style="background: linear-gradient(135deg, #0066cc, #0099ff);">
-                      {{ appt.patient.first_name|slice:":1" if appt.patient.first_name else 'P' }}
+                      {% if appt.patient.first_name %}{{ appt.patient.first_name|slice:":1" }}{% else %}P{% endif %}
                     </div>
                     <div>
                       <span class="fw-semibold small">{{ appt.patient.full_name }}</span><br>
@@ -229,7 +229,7 @@
                 </td>
                 <td class="small">
                   <div>{{ appt.appointment_date|date:"d b Y" }}</div>
-                  <small class="text-muted">{{ appt.appointment_time|time:"H:i" if appt.appointment_time else '—' }}</small>
+                  <small class="text-muted">{% if appt.appointment_time %}{{ appt.appointment_time|time:"H:i" }}{% else %}—{% endif %}</small>
                 </td>
                 <td>
                   <span class="badge type-badge-{{ appt.appointment_type }}">
