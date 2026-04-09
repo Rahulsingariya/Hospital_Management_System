@@ -33,9 +33,9 @@
         <label class="form-label">Status</label>
         <select name="status" class="form-select">
           <option value="">All Statuses</option>
-          <option value="active" {{ 'selected' if status == 'active' }}>Active</option>
-          <option value="inactive" {{ 'selected' if status == 'inactive' }}>Inactive</option>
-          <option value="discharged" {{ 'selected' if status == 'discharged' }}>Discharged</option>
+          <option value="active" {% if status == 'active' %}selected{% endif %}>Active</option>
+          <option value="inactive" {% if status == 'inactive' %}selected{% endif %}>Inactive</option>
+          <option value="discharged" {% if status == 'discharged' %}selected{% endif %}>Discharged</option>
         </select>
       </div>
       <div class="col-md-3">
@@ -155,7 +155,7 @@
     <li class="page-item"><a class="page-link" href="?page={{ patients.previous_page_number }}&q={{ query }}&status={{ status }}"><i class="bi bi-chevron-left"></i></a></li>
     {% endif %}
     {% for num in patients.paginator.page_range %}
-    <li class="page-item {{ 'active' if patients.number == num }}">
+    <li class="page-item {% if patients.number == num %}active{% endif %}">
       <a class="page-link" href="?page={{ num }}&q={{ query }}&status={{ status }}">{{ num }}</a>
     </li>
     {% endfor %}
