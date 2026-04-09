@@ -28,11 +28,11 @@
         <label class="form-label">Status</label>
         <select name="status" class="form-select">
           <option value="">All Statuses</option>
-          <option value="scheduled" {{ 'selected' if status == 'scheduled' }}>Scheduled</option>
-          <option value="confirmed" {{ 'selected' if status == 'confirmed' }}>Confirmed</option>
-          <option value="in_progress" {{ 'selected' if status == 'in_progress' }}>In Progress</option>
-          <option value="completed" {{ 'selected' if status == 'completed' }}>Completed</option>
-          <option value="cancelled" {{ 'selected' if status == 'cancelled' }}>Cancelled</option>
+          <option value="scheduled" {% if status == 'scheduled' %}selected{% endif %}>Scheduled</option>
+          <option value="confirmed" {% if status == 'confirmed' %}selected{% endif %}>Confirmed</option>
+          <option value="in_progress" {% if status == 'in_progress' %}selected{% endif %}>In Progress</option>
+          <option value="completed" {% if status == 'completed' %}selected{% endif %}>Completed</option>
+          <option value="cancelled" {% if status == 'cancelled' %}selected{% endif %}>Cancelled</option>
         </select>
       </div>
       <div class="col-md-3">
@@ -118,10 +118,10 @@
       <div class="mb-4">
         <h6 style="margin: 0 0 8px; font-family: 'Poppins', sans-serif; font-weight: 700; font-size: 13px; color: #6b7280; text-transform: uppercase; letter-spacing: 0.5px;">Doctor</h6>
         <div class="d-flex align-items-center gap-2">
-          <div class="avatar-circle-appt" style="background: linear-gradient(135deg, #ec4899, #f472b6);">{{ appt.doctor.name|slice:":1" if appt.doctor.name else appt.doctor.first_name|slice:":1" }}</div>
+          <div class="avatar-circle-appt" style="background: linear-gradient(135deg, #ec4899, #f472b6);">{% if appt.doctor.name %}{{ appt.doctor.name|slice:":1" }}{% else %}{{ appt.doctor.first_name|slice:":1" }}{% endif %}</div>
           <div style="flex: 1;">
             <p style="margin: 0; font-weight: 700; font-size: 14px; color: #1f2937;">{% if appt.doctor.name %}{{ appt.doctor.name }}{% else %}{{ appt.doctor.full_name }}{% endif %}</p>
-            <p style="margin: 2px 0 0; font-size: 11px; color: #6b7280;">{{ appt.doctor.department.name if appt.doctor.department else '—' }}</p>
+            <p style="margin: 2px 0 0; font-size: 11px; color: #6b7280;">{% if appt.doctor.department %}{{ appt.doctor.department.name }}{% else %}—{% endif %}</p>
           </div>
         </div>
       </div>
