@@ -21,7 +21,7 @@
       <div class="card-body">
         <div class="info-grid">
           <div class="info-item"><div class="info-label">Patient</div><div class="info-value">{{ order.patient.full_name }}</div></div>
-          <div class="info-item"><div class="info-label">Doctor</div><div class="info-value">{{ order.doctor.full_name if order.doctor else '—' }}</div></div>
+          <div class="info-item"><div class="info-label">Doctor</div><div class="info-value">{% if order.doctor %}{{ order.doctor.full_name }}{% else %}—{% endif %}</div></div>
           <div class="info-item"><div class="info-label">Date</div><div class="info-value">{{ order.ordered_date|date:"d b Y H:i" }}</div></div>
           {% if order.processed_by %}<div class="info-item"><div class="info-label">Processed By</div><div class="info-value">{{ order.processed_by.get_full_name }}</div></div>{% endif %}
         </div>
@@ -58,11 +58,11 @@
           {% csrf_token %}
           <label class="form-label">Change Status</label>
           <select name="status" class="form-select mb-3">
-            <option value="ordered" {{ 'selected' if order.status == 'ordered' }}>Ordered</option>
-            <option value="sample_collected" {{ 'selected' if order.status == 'sample_collected' }}>Sample Collected</option>
-            <option value="processing" {{ 'selected' if order.status == 'processing' }}>Processing</option>
-            <option value="completed" {{ 'selected' if order.status == 'completed' }}>Completed</option>
-            <option value="cancelled" {{ 'selected' if order.status == 'cancelled' }}>Cancelled</option>
+            <option value="ordered" {% if order.status == 'ordered' %}selected{% endif %}>Ordered</option>
+            <option value="sample_collected" {% if order.status == 'sample_collected' %}selected{% endif %}>Sample Collected</option>
+            <option value="processing" {% if order.status == 'processing' %}selected{% endif %}>Processing</option>
+            <option value="completed" {% if order.status == 'completed' %}selected{% endif %}>Completed</option>
+            <option value="cancelled" {% if order.status == 'cancelled' %}selected{% endif %}>Cancelled</option>
           </select>
           <button type="submit" class="btn btn-primary w-100">Update Status</button>
         </form>
