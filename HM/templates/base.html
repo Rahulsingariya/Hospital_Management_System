@@ -68,10 +68,10 @@
     {% if request.user.avatar %}
       <img src="{{ request.user.avatar.url }}" class="user-avatar" alt="avatar"/>
     {% else %}
-      <div class="user-avatar-placeholder">{{ request.user.first_name|slice:":1" if request.user.first_name else request.user.username|slice:":1" }}</div>
+      <div class="user-avatar-placeholder">{% if request.user.first_name %}{{ request.user.first_name|slice:":1" }}{% else %}{{ request.user.username|slice:":1" }}{% endif %}</div>
     {% endif %}
     <div class="user-details">
-      <span class="user-name">{{ request.user.get_full_name or request.user.username }}</span>
+      <span class="user-name">{% if request.user.get_full_name %}{{ request.user.get_full_name }}{% else %}{{ request.user.username }}{% endif %}</span>
       <span class="user-role">{{ request.user.get_role_display }}</span>
     </div>
     <a href="{% url 'accounts:logout' %}" class="btn-logout" title="Logout">
