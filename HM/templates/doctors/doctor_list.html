@@ -31,7 +31,7 @@
         <select name="dept" class="form-select">
           <option value="">— All Departments —</option>
           {% for dept in departments %}
-          <option value="{{ dept.id }}" {{ 'selected' if selected_dept == dept.id|string }}>{{ dept.name }}</option>
+          <option value="{{ dept.id }}" {% if selected_dept == dept.id|stringformat:"s" %}selected{% endif %}>{{ dept.name }}</option>
           {% endfor %}
         </select>
       </div>
@@ -49,11 +49,11 @@
       <div class="card-body">
         <div class="d-flex align-items-flex-start gap-3 mb-4">
           <div class="avatar-circle avatar-circle-lg" style="background: linear-gradient(135deg, #2563eb, #3b82f6); font-size: 18px;">
-            {{ doctor.name|slice:":1" if doctor.name else 'D' }}
+            {% if doctor.name %}{{ doctor.name|slice:":1" }}{% else %}D{% endif %}
           </div>
           <div class="flex-grow-1">
             <h6 class="mb-1" style="font-size: 15px; font-weight: 700;">Dr. {{ doctor.name }}</h6>
-            <p class="text-muted small mb-1">{{ doctor.specialization.name if doctor.specialization else '—' }}</p>
+            <p class="text-muted small mb-1">{% if doctor.specialization %}{{ doctor.specialization.name }}{% else %}—{% endif %}</p>
             <code class="text-muted" style="font-size: 11px;">{{ doctor.doctor_id }}</code>
           </div>
           <span class="badge {% if doctor.availability == 'available' %}bg-success{% elif doctor.availability == 'busy' %}bg-warning{% else %}bg-secondary{% endif %}" style="white-space: nowrap;">
@@ -65,7 +65,7 @@
           <div class="col-6">
             <div class="stat-mini">
               <div class="stat-mini-label">Department</div>
-              <div class="stat-mini-value">{{ doctor.department.name if doctor.department else '—' }}</div>
+              <div class="stat-mini-value">{% if doctor.department %}{{ doctor.department.name }}{% else %}—{% endif %}</div>
             </div>
           </div>
           <div class="col-6">
