@@ -174,7 +174,7 @@
                 <td style="padding: 12px; font-size: 12px; font-weight: 600;">{{ v.oxygen_saturation|default:"—" }}{% if v.oxygen_saturation %}%{% endif %}</td>
                 <td style="padding: 12px; font-size: 12px;">{{ v.weight|default:"—" }}{% if v.weight %} kg{% endif %}</td>
               </tr>
-              {% else %}
+              {% empty %}
               <tr><td colspan="6" style="padding: 40px 20px; text-align: center; color: #9ca3af;"><p style="margin: 0;">No vitals recorded</p></td></tr>
               {% endfor %}
             </tbody>
@@ -231,10 +231,10 @@
                 <td style="padding: 12px; font-size: 12px;"><code style="background: #f3f4f6; padding: 2px 6px; border-radius: 4px;">{{ inv.invoice_number }}</code></td>
                 <td style="padding: 12px; font-size: 12px;">{{ inv.issue_date|date:"d b Y" }}</td>
                 <td style="padding: 12px; font-weight: 700; color: #2563eb;">₹{{ inv.total|floatformat:"2" }}</td>
-                <td style="padding: 12px;"><span class="badge {% if inv.status == 'paid' %}bg-success-subtle text-success{% elif inv.status in ['sent','partial'] %}bg-warning-subtle text-warning{% else %}bg-secondary-subtle text-secondary{% endif %}" style="font-size: 10px;">{{ inv.get_status_display }}</span></td>
+                <td style="padding: 12px;"><span class="badge {% if inv.status == 'paid' %}bg-success-subtle text-success{% elif inv.status == 'sent' or inv.status == 'partial' %}bg-warning-subtle text-warning{% else %}bg-secondary-subtle text-secondary{% endif %}" style="font-size: 10px;">{{ inv.get_status_display }}</span></td>
                 <td style="padding: 12px; text-align: center;"><a href="{% url 'billing:detail' inv.pk %}" class="btn btn-outline-primary btn-sm"><i class="bi bi-eye"></i></a></td>
               </tr>
-              {% else %}
+              {% empty %}
               <tr><td colspan="5" style="padding: 40px 20px; text-align: center; color: #9ca3af;"><p style="margin: 0;">No invoices</p></td></tr>
               {% endfor %}
             </tbody>
