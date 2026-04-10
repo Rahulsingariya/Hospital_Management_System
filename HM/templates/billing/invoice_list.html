@@ -112,7 +112,7 @@
           <p style="margin: 0; font-size: 11px; font-weight: 600; color: #6b7280; text-transform: uppercase; letter-spacing: 0.5px;">Invoice</p>
           <p style="margin: 4px 0 0; font-size: 13px; color: #1f2937; font-weight: 700;">{{ inv.invoice_number }}</p>
         </div>
-        <span class="badge {% if inv.status == 'paid' %}bg-success-subtle text-success{% elif inv.status in ['sent','partial'] %}bg-warning-subtle text-warning{% elif inv.status == 'overdue' %}bg-danger-subtle text-danger{% else %}bg-secondary-subtle text-secondary{% endif %}" style="font-size: 11px; padding: 6px 10px; white-space: nowrap;">
+        <span class="badge {% if inv.status == 'paid' %}bg-success-subtle text-success{% elif inv.status == 'sent' or inv.status == 'partial' %}bg-warning-subtle text-warning{% elif inv.status == 'overdue' %}bg-danger-subtle text-danger{% else %}bg-secondary-subtle text-secondary{% endif %}" style="font-size: 11px; padding: 6px 10px; white-space: nowrap;">
           <span style="display: inline-block; width: 6px; height: 6px; border-radius: 50%; background-color: currentColor; margin-right: 4px; vertical-align: middle;"></span>
           {{ inv.get_status_display }}
         </span>
