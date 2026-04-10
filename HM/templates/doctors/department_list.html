@@ -8,6 +8,9 @@
 {% block content %}
 <div class="page-header">
   <div><h1 class="page-title">Departments</h1><p class="page-subtitle">Hospital departments and their heads</p></div>
+  <div>
+    <a href="{% url 'doctors:department_create' %}" class="btn btn-primary"><i class="bi bi-plus-lg me-1"></i> Add Department</a>
+  </div>
 </div>
 <div class="row g-4">
   {% for dept in departments %}
