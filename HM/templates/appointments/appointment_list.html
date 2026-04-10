@@ -146,13 +146,14 @@
       </div>
     </div>
   </div>
-  {% empty %}
+
+  {% endfor %}
+{% else %}
   <div style="border: 1px solid #e5e7eb; border-radius: 12px; padding: 60px 24px; background: white; text-align: center;">
     <i class="bi bi-calendar-x" style="font-size: 48px; color: #d1d5db; margin-bottom: 16px; display: block;"></i>
-    <h5 style="font-family: 'Poppins', sans-serif; font-weight: 700; color: #1f2937; margin: 0 0 8px;">No appointments found</h5>
-    <p style="color: #6b7280; margin: 0 0 20px; font-size: 14px;">Try adjusting your search or book a new appointment.</p>
+    <h5 style="font-weight: 700; color: #1f2937; margin: 0 0 8px;">No appointments found</h5>
     <a href="{% url 'appointments:create' %}" class="btn btn-primary"><i class="bi bi-calendar-plus"></i> Book Appointment</a>
   </div>
-  {% endfor %}
+{% endif %}
 </div>
 {% endblock %}
