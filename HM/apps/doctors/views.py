@@ -64,3 +64,13 @@ def doctor_edit(request, pk):
 def department_list(request):
     departments = Department.objects.prefetch_related('doctor_set').all()
     return render(request, 'doctors/department_list.html', {'departments': departments})
+
+
+@login_required
+def department_create(request):
+    form = DepartmentForm(request.POST or None)
+    if request.method == 'POST' and form.is_valid():
+        dept = form.save()
+        messages.success(request, f'Department "{dept.name}" created successfully!')
+        return redirect('doctors:departments')
+    return render(request, 'doctors/department_form.html', {'form': form, 'title': 'Add Department'})
